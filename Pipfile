@@ -14,8 +14,9 @@ tensorflow = "*"
 natsort = "*"
 theano = "*"
 scikit-learn = "*"
-jupyter-contrib-nbextensions = "*"
 ipywidgets = "*"
+papermill = "*"
+tqdm = "*"
 
 [dev-packages]
 
