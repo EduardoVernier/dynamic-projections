@@ -1,4 +1,4 @@
-# Dynmic projections
+# Dynamic projections
 
 Set up virtual env and dependencies using pipenv.
 https://pipenv.readthedocs.io/en/latest/
@@ -10,7 +10,7 @@ sudo apt-get install python3-tk
 ```
 To run a script use `pipenv run python <script_name>.py`. To open notebooks use `pipenv run jupyter notebook` or create a new shell with `pipenv shell` and then call `jupyter notebook`.
 
-##Data
+## Data
 ### Input data ---  `./Datasets`
 
 **Images** -- The directory hierarchy doesn’t matter, all the metadata should be contained in the file name. `<class>-<id>-<time>.png`, e.g. `airplane-1234-10.png` -- 10th revision of airplane with id 1234.
@@ -33,7 +33,7 @@ The notebooks should contain information about training total time and performan
 
 ##### Dynamic/static t-sne ---  `./Models/tsne`
 
-From the root folder, we need to add the `tsne` folder to the PYTHONPATH and then run the dtsne_wrapper script.  
+From the root folder, we need to add the `tsne` folder to the PYTHONPATH and then run the dtsne_wrapper script.
 ```
 export PYTHONPATH=${PYTHONPATH}:${PWD}/Models/tsne
 python Models/tsne/dtsne_wrapper.py ./Datasets/gaussians 70 0.1
