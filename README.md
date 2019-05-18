@@ -12,9 +12,12 @@ To run a script use `pipenv run python <script_name>.py`. To open notebooks use 
 
 ## Datasets ---  `./Datasets`
 
-#### Dataset table (TODO)
-id, type, n_items, n_dimensions, n_timesteps, info, link to notebook if exists
-
+#### Dataset table
+| dataset_id | n_items | n_dims | n_timesteps | n_classes | data_type          | source       | generator |
+|------------|---------|--------|-------------|-----------|--------------------|--------------|-----------|
+| gaussians  | 2000    | 100    | 10          | 10        | synthetic, tabular | dt-sne paper | -         |
+|            |         |        |             |           |                    |              |           |
+|            |         |        |             |           |                    |              |           |
 
 #### Formatting
 
@@ -63,11 +66,12 @@ python Vis/Main.py ./Output/gaussians-pca_s4.csv ./Output/gaussians-AE_10f_2f_20
 ```
 
 ## Computing the metrics
-The code for the metrics is located in a notebook called `template.ipynb`. For each dataset we use a tool called Papermill to instantiate a new notebook from the template. The two parameters that are needed are the output notebook (remember to change name to dataset_id) and the list of output/projection files we want to analyse. This is the code that generates the analysis for the gaussians dataset:
+The code for the metrics is located in a notebook called `template.ipynb`. For each dataset we use a tool called Papermill to instantiate a new notebook from the template. The two parameters that are needed are the output notebook path (remember to change name to dataset_id) and the list of output/projection files we want to analyse. This is the code that generates the analysis for the gaussians dataset:
 ```
-papermill ./Metrics/template.ipynb ./Metrics/gaussians.ipynb -p projection_paths './Output/gaussians-AE_10f_10f_2f_20ep.csv ./Output/gaussians-AE_10f_2f_20ep.csv ./Output/gaussians-dtsne_70p_0-1l.csv ./Output/gaussians-pca_s1.csv ./Output/gaussians-pca_s4.csv ./Output/gaussians-tsne_s1_70p.csv ./Output/gaussians-tsne_s4_70p.csv'
+papermill ./Metrics/template.ipynb ./Metrics/gaussians.ipynb --log-output -p projection_paths './Output/gaussians-AE_10f_10f_2f_20ep.csv ./Output/gaussians-AE_10f_2f_20ep.csv ./Output/gaussians-dtsne_70p_0-1l.csv ./Output/gaussians-pca_s1.csv ./Output/gaussians-pca_s4.csv ./Output/gaussians-tsne_s1_70p.csv ./Output/gaussians-tsne_s4_70p.csv'
 ```
-This took 11 min in my notebook. The results are written in a csv file that goes into the `./Metrics/Results` directory.
+The results are written in a csv file that goes into the `./Metrics/Results` directory.
+To check the (tqdm) progress see the `log_<dataset_id>` file in real time.
 
 
 ## Plotting the results
