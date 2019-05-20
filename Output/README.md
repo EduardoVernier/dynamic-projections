@@ -1,29 +1,32 @@
+gaussians-AE_10f_10f_2f_20ep
+gaussians-AE_10f_2f_20ep
+gaussians-dtsne_70p_0-1l
+gaussians-dtsne_70p_0l
+gaussians-tsne_s1_70p
+gaussians-tsne_s4_70p
+gaussians-pca_s1
+gaussians-pca_s4
 
-- gaussians-AE_10f_10f_2f_20ep
-- gaussians-AE_10f_2f_20ep
-- gaussians-dtsne_70p_0-1l
-- gaussians-dtsne_70p_0l
-- gaussians-tsne_s1_70p
-- gaussians-tsne_s4_70p
-- gaussians-pca_s1
-- gaussians-pca_s4
-- quickdraw-tsne_s1_200p
-- quickdraw-dtsne_200p_0-1l.csv
-- quickdraw-pca_s4
-- quickdraw-AE_784f_500f_500f_2000f_2f_20ep
-- quickdraw-C2AE_32c_32c_32c_1568f_2f_2ep
 
-- quickdraw-VAE_784f_512f_1024f_2048f_2f_10ep
-- quickdraw-C2VAE_32c_64c_128c_2f_ep25
-- cartolastd-AE_10f_10f_2f_20ep
-- cartolastd-AE_10f_2f_20ep
-- cartolastd-AE_50f_50f_2f_20ep
-- cartolastd-dtsne_100p_0-1l
-- cartolastd-dtsne_100p_0-2l
-- cartolastd-dtsne_100p_0l
-- cartolastd-pca_s4
-- esc50-AE_100f_100f_2f_20ep
-- esc50-AE_100f_10f_2f_20ep
-- esc50-C2AE_16c_8c_4c_32f_2f_5ep
-- esc50-C2AE_32c_32c_32c_256f_2f_5ep
-- esc50-pca_s4
+quickdraw-tsne_s1_200p
+quickdraw-dtsne_200p_0-1l.csv
+quickdraw-pca_s4
+quickdraw-AE_784f_500f_500f_2000f_2f_20ep
+quickdraw-C2AE_32c_32c_32c_1568f_2f_2ep
+quickdraw-VAE_784f_512f_1024f_2048f_2f_10ep
+quickdraw-C2VAE_32c_64c_128c_2f_ep25
+
+
+cartolastd-AE_10f_10f_2f_20ep
+cartolastd-AE_10f_2f_20ep
+cartolastd-AE_50f_50f_2f_20ep
+cartolastd-dtsne_100p_0l
+cartolastd-dtsne_100p_0-1l
+cartolastd-dtsne_100p_0-2l
+cartolastd-pca_s4
+
+esc50-AE_100f_100f_2f_20ep
+esc50-AE_100f_10f_2f_20ep
+esc50-C2AE_16c_8c_4c_32f_2f_5ep
+esc50-C2AE_32c_32c_32c_256f_2f_5ep
+esc50-pca_s4
