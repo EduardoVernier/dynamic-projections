@@ -1,20 +1,20 @@
-gaussians-AE_10f_10f_2f_20ep
-gaussians-AE_10f_2f_20ep
-gaussians-dtsne_70p_0-1l
-gaussians-dtsne_70p_0l
-gaussians-tsne_s1_70p
-gaussians-tsne_s4_70p
-gaussians-pca_s1
-gaussians-pca_s4
+Output/gaussians-AE_10f_10f_2f_20ep.csv
+Output/gaussians-AE_10f_2f_20ep.csv
+Output/gaussians-dtsne_70p_0-1l.csv
+Output/gaussians-tsne_s1_70p.csv
+Output/gaussians-tsne_s4_70p.csv
+Output/gaussians-pca_s1.csv
+Output/gaussians-pca_s4.csv
 
 
-quickdraw-tsne_s1_200p
-quickdraw-dtsne_200p_0-1l.csv
-quickdraw-pca_s4
-quickdraw-AE_784f_500f_500f_2000f_2f_20ep
-quickdraw-C2AE_32c_32c_32c_1568f_2f_2ep
-quickdraw-VAE_784f_512f_1024f_2048f_2f_10ep
-quickdraw-C2VAE_32c_64c_128c_2f_ep25
+Output/quickdraw-AE_784f_500f_500f_2000f_2f_20ep.csv
+Output/quickdraw-C2AE_32c_32c_32c_1568f_2f_2ep.csv
+Output/quickdraw-VAE_784f_2048f_1024f_512f_2f_0-25drop_10ep.csv
+Output/quickdraw-C2VAE_32c_64c_128c_6272f_2f_10ep.csv
+Output/quickdraw-dtsne_200p_0-1l.csv
+Output/quickdraw-dtsne_500p_0-5l_200rt.csv
+Output/quickdraw-tsne_s1_200p.csv
+Output/quickdraw-pca_s4.csv
 
 
 cartolastd-AE_10f_10f_2f_20ep
@@ -24,6 +24,7 @@ cartolastd-dtsne_100p_0l
 cartolastd-dtsne_100p_0-1l
 cartolastd-dtsne_100p_0-2l
 cartolastd-pca_s4
+
 
 esc50-AE_100f_100f_2f_20ep
 esc50-AE_100f_10f_2f_20ep
