@@ -11,7 +11,7 @@ from sklearn.utils import shuffle
 from keras import backend as K
 
 # Load drawings from the quickdraw dataset
-def load_drawings(base_path='../Datasets/quickdraw/'):
+def load_drawings(base_path):
     categories = list(set([img.split('/')[-1].split('-')[0] for img in glob.glob(base_path + '*')]))
     X = []
     CATEGORIES = {}
