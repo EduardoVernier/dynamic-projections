@@ -17,6 +17,7 @@ scikit-learn = "*"
 ipywidgets = "*"
 papermill = "*"
 tqdm = "*"
+imageio = "*"
 
 [dev-packages]
 

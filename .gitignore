@@ -6,3 +6,5 @@ Datasets/*/
 Metrics/*.ipynb
 !Metrics/template.ipynb
 Metrics/log*
+Plots/Anim
+Plots/Raw
