@@ -7,4 +7,6 @@ Metrics/*.ipynb
 !Metrics/template.ipynb
 Metrics/log*
 Plots/Anim
+!Plots/Anim/*/*.avi
 Plots/Raw
+
