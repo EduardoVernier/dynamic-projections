@@ -27,7 +27,7 @@ if __name__ == '__main__':
             df = df.sort_values(['drawing_cat_id', 'drawing_id'])
             if len(y) == 0:
                 y = df['drawing_cat_str'].str.cat(df['drawing_id'].astype(str), sep='-')
-                Xs.append(X_flat[df.X_index])
+            Xs.append(X_flat[df.X_index])
     else:
         csvs = natsort.natsorted(glob.glob(dataset_dir + '/*'))
         n_revisions = len(csvs)

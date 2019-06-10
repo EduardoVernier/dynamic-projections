@@ -18,21 +18,23 @@ class Visualizer(object):
     def show(cls, project_manager):
         cls.project_manager = project_manager
         # Set up figure and axis
-        n_row, n_col = (1, len(project_manager.projection_list))
-
-        cls.fig = plt.figure(1, figsize=(n_col * 4, 4))
-        cls.gs = gridspec.GridSpec(n_row, n_col) #, height_ratios=[2, 1, 1, 1])
-        cls.gs.update(left=.035, right=.98, top=.95, bottom=.05)
+        n_proj = len(project_manager.projection_list)
+        if n_proj < 4:
+            fig, axes = plt.subplots(ncols=n_proj, nrows=1,figsize=(n_proj*5,5))
+        else:
+            ncols = 4
+            nrows = (n_proj-1) // 4 + 1
+            cls.fig, cls.axes = plt.subplots(ncols=ncols, nrows=nrows,figsize=(ncols*5,nrows*5))
+            cls.axes = cls.axes.flatten()
 
         cls.fig.canvas.mpl_connect('key_press_event', cls.key_press)
         # Init projection views
-        if n_col == 1:
-            p_axs = plt.subplot(cls.gs[0])
+        if n_proj == 1:
+            p_axs = cls.axes
             cls.projection_view_list.append(ProjectionView(cls.project_manager.projection_list[0], p_axs))
         else:
-            for p in cls.project_manager.projection_list:
-                p_axs = plt.subplot(cls.gs[0, p.position])
-                cls.projection_view_list.append(ProjectionView(p, p_axs))
+            for i, p in enumerate(cls.project_manager.projection_list):
+                cls.projection_view_list.append(ProjectionView(p, cls.axes[i]))
 
         plt.show()
 

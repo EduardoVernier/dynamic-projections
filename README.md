@@ -13,11 +13,12 @@ To run a script use `pipenv run python <script_name>.py`. To open notebooks use 
 ## Datasets ---  `./Datasets`
 
 #### Dataset table
-| dataset_id | n_items | n_dims | n_timesteps | n_classes | data_type          | source       | generator |
-|------------|---------|--------|-------------|-----------|--------------------|--------------|-----------|
-| gaussians  | 2000    | 100    | 10          | 10        | synthetic, tabular | dt-sne paper | -         |
-|            |         |        |             |           |                    |              |           |
-|            |         |        |             |           |                    |              |           |
+| dataset_id | n_items | n_dims | n_timesteps | n_classes | data_type                  | source               | generator                |
+|:-----------|:--------|:-------|:------------|:----------|:---------------------------|:---------------------|:-------------------------|
+| gaussians  | 2000    | 100    | 10          | 10        | synthetic, tabular         | dt-sne paper         | -                        |
+| quickdraw  | 600     | 784    | 89          | 6         | images, drawings           | google quick, draw!  | [notebook][quickdraw_nb] |
+| cartolastd | 696     | 17     | 19          | 5         | football player statistics | globo cartola Brazil | [notebook][cartola_nb]   |
+| fashion    | 1000    | 786    | 10          | 10        | photos, clothing           |                      | [notebook][fashion_nb]   |
 
 #### Formatting
 
@@ -63,7 +64,6 @@ python Models/pca/pca_s4.py ./Datasets/gaussians
 There is a simple python tool based on matplotlib to quickly show and help us debug the generated projections. To use it, call
 ```
 python Vis/Main.py ./Output/gaussians-pca_s4.csv ./Output/gaussians-AE_10f_2f_20ep.csv
-
 python Vis/Main.py $(find Output/ -type f -name cartolastd*)
 ```
 
@@ -71,14 +71,22 @@ python Vis/Main.py $(find Output/ -type f -name cartolastd*)
 The code for the metrics is located in a notebook called `template.ipynb`. For each dataset we use a tool called Papermill to instantiate a new notebook from the template. The two parameters that are needed are the output notebook path (remember to change name to dataset_id) and the list of output/projection files we want to analyse. This is the code that generates the analysis for the gaussians dataset:
 ```
 papermill ./Metrics/template.ipynb ./Metrics/gaussians.ipynb --log-output -p projection_paths 'Output/gaussians-AE_10f_10f_2f_20ep.csv Output/gaussians-AE_10f_2f_20ep.csv Output/gaussians-tsne_s1_70p.csv Output/gaussians-tsne_s4_70p.csv Output/gaussians-dtsne_70p_0-1l.csv Output/gaussians-pca_s1.csv Output/gaussians-pca_s4.csv'
-
 papermill ./Metrics/template.ipynb ./Metrics/quickdraw.ipynb --log-output -p projection_paths 'Output/quickdraw-AE_784f_500f_500f_2000f_2f_20ep.csv Output/quickdraw-C2AE_32c_32c_32c_1568f_2f_2ep.csv Output/quickdraw-VAE_784f_2048f_1024f_512f_2f_0-25drop_10ep.csv Output/quickdraw-C2VAE_32c_64c_128c_6272f_2f_10ep.csv Output/quickdraw-tsne_s1_200p.csv Output/quickdraw-dtsne_500p_0-5l.csv Output/quickdraw-pca_s1.csv Output/quickdraw-pca_s4.csv'
-
 papermill ./Metrics/template.ipynb ./Metrics/cartola.ipynb --log-output -p projection_paths 'Output/cartolastd-AE_10f_2f_50ep.csv Output/cartolastd-AE_10f_10f_2f_50ep.csv Output/cartolastd-VAE_10f_2f_50ep.csv Output/cartolastd-tsne_s1_100p.csv Output/cartolastd-tsne_s4_1000p.csv Output/cartolastd-dtsne_100p_0-1l.csv Output/cartolastd-pca_s1.csv Output/cartolastd-pca_s4.csv'
 ```
 The results are written in a csv file that goes into the `./Metrics/Results` directory.
 To check the (tqdm) progress see the `log_<dataset_id>` file in real time.
 
-
-## Plotting the results
+## Generating videos
 TODO
+
+## Plotting the metric results
+TODO
+
+## Ploting static trail viz
+TODO
+
+
+[cartola_nb]:   https://github.com/EduardoVernier/dynamic-projection-tests/blob/master/cartola.ipynb
+[quickdraw_nb]: https://github.com/EduardoVernier/dynamic-projection-tests/blob/master/GenerateImagesFromPaths.ipynb
+[fashion_nb]:   https://github.com/EduardoVernier/dynamic-projection-tests/blob/master/fashion.ipynb

@@ -1,4 +1,4 @@
-from tsne import tsne
+from sklearn.manifold import TSNE
 import sys
 import glob
 import natsort
@@ -44,7 +44,8 @@ if __name__ == '__main__':
 		df_out = pd.DataFrame(index=y)
 		random_state = 0
 		# Reduced number of epochs and sigma_iters. Previous were 1000 and 50.
-		Y = tsne(np.array(X), perplexity=perplexity, n_epochs=10, sigma_iters=20, random_state=random_state, verbose=1)
+		# Y = tsne(np.array(X), perplexity=perplexity, n_epochs=10, sigma_iters=20, random_state=random_state, verbose=1)
+		Y = TSNE(n_components=2, perplexity=perplexity, verbose=1, random_state=0).fit_transform(X)
 		for t in range(n_revisions):
 			df_out['t{}d0'.format(t)] = Y[t*n_points:(t+1)*n_points, 0]
 			df_out['t{}d1'.format(t)] = Y[t*n_points:(t+1)*n_points, 1]

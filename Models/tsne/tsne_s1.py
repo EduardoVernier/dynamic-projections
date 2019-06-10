@@ -1,5 +1,5 @@
 from Models import Shared
-from tsne import tsne
+from sklearn.manifold import TSNE
 import sys
 import glob
 import natsort
@@ -47,7 +47,8 @@ if __name__ == '__main__':
 			sys.stdout.flush()
 			random_state = random.randint(0, 100)
 			# Reduced number of epochs and sigma_iters. Previous were 1000 and 50.
-			Y = tsne(X, perplexity=perplexity, n_epochs=200, sigma_iters=20, random_state=random_state, verbose=0)
+			# Y = tsne(X, perplexity=perplexity, n_epochs=200, sigma_iters=20, random_state=random_state, verbose=0)
+			Y = TSNE(n_components=2, perplexity=perplexity, verbose=0, random_state=random_state).fit_transform(X)
 			df_out['t{}d0'.format(t)] = Y[:,0]
 			df_out['t{}d1'.format(t)] = Y[:,1]
 		if (len(df_out) - df_out.count()).sum() == 0:
