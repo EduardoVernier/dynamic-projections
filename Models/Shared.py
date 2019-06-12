@@ -21,9 +21,10 @@ def load_drawings(base_path):
     drawing_t = []
     X_index = []
 
+    print(sorted(categories))
     for cat_i, cat in enumerate(sorted(categories)):
         CATEGORIES[cat_i] = cat  # Maps a int to a string
-        paths = glob.glob(base_path + cat + '*')
+        paths = glob.glob(base_path + cat + '-*')
         for p in paths:
             # Generate array from img
             im = cv2.imread(p, cv2.IMREAD_GRAYSCALE)

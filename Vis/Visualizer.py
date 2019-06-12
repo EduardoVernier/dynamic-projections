@@ -18,9 +18,9 @@ class Visualizer(object):
     def show(cls, project_manager):
         cls.project_manager = project_manager
         # Set up figure and axis
-        n_proj = len(project_manager.projection_list)
+        n_proj = len(project_manager.projection_list) + 1
         if n_proj < 4:
-            fig, axes = plt.subplots(ncols=n_proj, nrows=1,figsize=(n_proj*5,5))
+            cls.fig, cls.axes = plt.subplots(ncols=n_proj, nrows=1,figsize=(n_proj*5,5))
         else:
             ncols = 4
             nrows = (n_proj-1) // 4 + 1
@@ -56,6 +56,8 @@ class Visualizer(object):
         sys.stdout.flush()
         if event.key == ' ':  # Continue animation with spacebar
             cls.pause ^= True
+        if event.key == 'a':  # Continue animation with spacebar
+            config.autopause ^= True
 
 
 class ProjectionView:

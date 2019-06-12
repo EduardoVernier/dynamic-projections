@@ -13,12 +13,17 @@ To run a script use `pipenv run python <script_name>.py`. To open notebooks use 
 ## Datasets ---  `./Datasets`
 
 #### Dataset table
-| dataset_id | n_items | n_dims | n_timesteps | n_classes | data_type                  | source               | generator                |
-|:-----------|:--------|:-------|:------------|:----------|:---------------------------|:---------------------|:-------------------------|
-| gaussians  | 2000    | 100    | 10          | 10        | synthetic, tabular         | dt-sne paper         | -                        |
-| quickdraw  | 600     | 784    | 89          | 6         | images, drawings           | google quick, draw!  | [notebook][quickdraw_nb] |
-| cartolastd | 696     | 17     | 19          | 5         | football player statistics | globo cartola Brazil | [notebook][cartola_nb]   |
-| fashion    | 1000    | 786    | 10          | 10        | photos, clothing           |                      | [notebook][fashion_nb]   |
+The notebooks and files that generated the datasets are available [here](https://drive.google.com/drive/folders/1MXJK2mqH015pAohuBawVIQeqgB38JAsy?usp=sharing).
+| dataset_id | n_items | n_timesteps | n_dims | n_classes | data_type                                                       | source               |
+|:-----------|:--------|:------------|:-------|:----------|:----------------------------------------------------------------|:---------------------|
+| gaussians  | 2000    | 10          | 100    | 10        | synthetic, tabular                                              | dt-sne paper         |
+| quickdraw  | 600     | 89          | 784    | 6         | images, drawings                                                | google quick, draw!  |
+| cartolastd | 696     | 19          | 17     | 5         | football player statistics                                      | globo cartola Brazil |
+| fashion    | 1000    | 10          | 784    | 10        | photos of clothing                                              | keras                |
+| cifar10cnn | 1000    | 30          | 10     | 10        | activations of last layer of a cnn classifying cifar10          | keras                |
+| faces      | 400     | 10          | 4096   | 40        | Olivetti faces data-set with 10 photos (timesteps) of 40 people | AT&T                 |
+| esc50      | 320     | 108         | 128    | 8         | audioclips of different events (sirens, laughing, wind, etc)    | K. J. Piczak         |
+| nnset      | 80      | 30          | 8070   | 80        | neural net weights and biases learning mnist                    |                      |
 
 #### Formatting
 

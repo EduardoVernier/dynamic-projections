@@ -19,7 +19,7 @@ if __name__ == '__main__':
     Xs = []
     y = []
     n_revisions = 0
-    if 'quickdraw' in dataset_dir or 'fashion' in dataset_dir:
+    if 'quickdraw' in dataset_dir or 'fashion' in dataset_dir or 'faces' in dataset_dir:
         X, info_df, n_revisions, CATEGORIES = Shared.load_drawings(dataset_dir + '/')
         N = len(X)
         X_flat = np.reshape(np.ravel(X), (N, -1))
