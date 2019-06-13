@@ -24,6 +24,7 @@ The notebooks and files that generated the datasets are available [here](https:/
 | faces      | 400     | 10          | 4096   | 40        | Olivetti faces data-set with 10 photos (timesteps) of 40 people | AT&T                 |
 | esc50      | 320     | 108         | 128    | 8         | audioclips of different events (sirens, laughing, wind, etc)    | K. J. Piczak         |
 | nnset      | 80      | 30          | 8070   | 80        | neural net weights and biases learning mnist                    |                      |
+| walk       | 300     | 50          | 100    | 3         | biased random walks in 100d                                     |                      |
 
 #### Formatting
 
