@@ -14,17 +14,29 @@ To run a script use `pipenv run python <script_name>.py`. To open notebooks use 
 
 #### Dataset table
 The notebooks and files that generated the datasets are available [here](https://drive.google.com/drive/folders/1MXJK2mqH015pAohuBawVIQeqgB38JAsy?usp=sharing).
-| dataset_id | n_items | n_timesteps | n_dims | n_classes | data_type                                                       | source               |
-|:-----------|:--------|:------------|:-------|:----------|:----------------------------------------------------------------|:---------------------|
-| gaussians  | 2000    | 10          | 100    | 10        | synthetic, tabular                                              | dt-sne paper         |
-| quickdraw  | 600     | 89          | 784    | 6         | images, drawings                                                | google quick, draw!  |
-| cartolastd | 696     | 19          | 17     | 5         | football player statistics                                      | globo cartola Brazil |
-| fashion    | 1000    | 10          | 784    | 10        | photos of clothing                                              | keras                |
-| cifar10cnn | 1000    | 30          | 10     | 10        | activations of last layer of a cnn classifying cifar10          | keras                |
-| faces      | 400     | 10          | 4096   | 40        | Olivetti faces data-set with 10 photos (timesteps) of 40 people | AT&T                 |
-| esc50      | 320     | 108         | 128    | 8         | audioclips of different events (sirens, laughing, wind, etc)    | K. J. Piczak         |
-| nnset      | 80      | 30          | 8070   | 80        | neural net weights and biases learning mnist                    |                      |
-| walk       | 300     | 50          | 100    | 3         | biased random walks in 100d                                     |                      |
+|    | dataset_id | n_items | n_timesteps | n_dims | n_classes | data_type                                                                                         | source              |
+|:---|:-----------|:--------|:------------|:-------|:----------|:--------------------------------------------------------------------------------------------------|:--------------------|
+| 1  | cartolastd | 696     | 19          | 17     | 5         | football player statistics                                                                        | globo cartola       |
+| 2  | cifar10cnn | 1000    | 30          | 10     | 10        | activations of last layer of a cnn classifying cifar10                                            | -                   |
+| 3  | esc50      | 320     | 108         | 128    | 8         | audioclips of different events (sirens, laughing, wind, etc)                                      | K. J. Piczak        |
+| 4  | faces      | 400     | 10          | 4096   | 40        | Olivetti faces data-set with 10 photos (timesteps) of 40 people                                   | AT&T                |
+| 5  | fashion    | 1000    | 10          | 784    | 10        | photos of clothing                                                                                | -                   |
+| 6  | gaussians  | 2000    | 10          | 100    | 10        | synthetic, tabular                                                                                | dt-sne paper        |
+| 7  | nnset      | 80      | 30          | 8070   | 80        | neural net weights and biases learning mnist                                                      | -                   |
+| 8  | qtables    | 180     | 40          | 1200   | 3         | qtables from reinforcement learning a mountain environment (varying discounts and learning rates) | -                   |
+| 9  | quickdraw  | 600     | 89          | 784    | 6         | images, drawings                                                                                  | google quick, draw! |
+| 10 | walk       | 300     | 50          | 100    | 3         | biased random walks in 100d                                                                       | -                   |
+
+cartolastd
+cifar10cnn
+esc50
+faces
+fashion
+gaussians
+nnset
+qtables
+quickdraw
+walk
 
 #### Formatting
 
