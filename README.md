@@ -15,6 +15,7 @@ To run a script use `pipenv run python <script_name>.py`. To open notebooks use 
 #### Dataset table
 
 The notebooks and files that generated the datasets are available [here](https://drive.google.com/drive/folders/1MXJK2mqH015pAohuBawVIQeqgB38JAsy?usp=sharing).
+
 |    | dataset_id | n_items | n_timesteps | n_dims | n_classes | data_type                                                                                         | source              |
 |:---|:-----------|:--------|:------------|:-------|:----------|:--------------------------------------------------------------------------------------------------|:--------------------|
 | 1  | cartolastd | 696     | 19          | 17     | 5         | football player statistics                                                                        | globo cartola       |
