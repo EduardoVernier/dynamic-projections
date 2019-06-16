@@ -27,16 +27,6 @@ The notebooks and files that generated the datasets are available [here](https:/
 | 9  | quickdraw  | 600     | 89          | 784    | 6         | images, drawings                                                                                  | google quick, draw! |
 | 10 | walk       | 300     | 50          | 100    | 3         | biased random walks in 100d                                                                       | -                   |
 
-cartolastd
-cifar10cnn
-esc50
-faces
-fashion
-gaussians
-nnset
-qtables
-quickdraw
-walk
 
 #### Formatting
 
