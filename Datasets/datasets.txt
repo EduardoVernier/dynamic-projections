@@ -1,10 +1,10 @@
 cartolastd
 cifar10cnn
 esc50
-faces
 fashion
 gaussians
 nnset
 qtables
 quickdraw
+sorts
 walk
