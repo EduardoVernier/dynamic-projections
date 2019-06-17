@@ -47,10 +47,12 @@ if __name__ == '__main__':
             df_out['t{}d1'.format(t)] = Ys[t].T[1]
 
         if (len(df_out) - df_out.count()).sum() == 0:
-            df_out.to_csv('./Output/{}-dtsne_{}p_{}l.csv'.format(dataset_dir.split('/')[-1], int(p), float(l)), index_label='id')
+            df_out.to_csv('./Output/{}-dtsne_{}p_{}l.csv'.format(dataset_dir.split('/')[-1], int(p), str(l).replace('.', '-')), index_label='id')
             print(p, 'p', l, 'l', 'OK')
         else:
+            pd.DataFrame().to_csv('./Output/failed/{}-dtsne_{}p_{}l.csv'.format(dataset_dir.split('/')[-1], int(p), str(l).replace('.', '-')), index_label='id')
             print(p, 'p', l, 'l', 'crashed')
     except Exception as e:
+        pd.DataFrame().to_csv('./Output/failed/{}-dtsne_{}p_{}l.csv'.format(dataset_dir.split('/')[-1], int(p), str(l).replace('.', '-')), index_label='id')
         print(e)
         print(p, 'p', l, 'l', 'crashed')
