@@ -138,7 +138,7 @@ def save_drawing_vae_activations(encoder, X_flat, info_df, n_revisions, nb_name)
 
     df_out = pd.DataFrame(csv_out, columns=header)
     df_out.to_csv('../../Output/{}.csv'.format(nb_name), index=False)
-    return True
+    return df_out
 
 
 # def save_gaussian_vae_activations(encoder, X_flat, info_df, n_revisions, nb_name):
@@ -158,8 +158,7 @@ def save_tabular_vae_activations(encoder, X_flat, info_df, n_revisions, nb_name)
     csv_out = []
     gb = info_df.groupby(['point_id'])
     for index, df in gb:  # Iterave over all drawing sequences
-        drawing_id = index[0]
-        item_row = [drawing_id]
+        item_row = [index]
         for index, _ in df.sort_values('t').iterrows():  # For all timesteps
             for d in range(layer_output.shape[1]):  # Add all dimensions
                 item_row.append(layer_output[index][d])
@@ -167,7 +166,7 @@ def save_tabular_vae_activations(encoder, X_flat, info_df, n_revisions, nb_name)
 
     df_out = pd.DataFrame(csv_out, columns=header)
     df_out.to_csv('../../Output/{}.csv'.format(nb_name), index=False)
-    return True
+    return df_out
 
 
 # def save_quickdraw_activations(ae, X_flat, info_df, n_revisions, nb_name):
@@ -196,7 +195,7 @@ def save_drawing_activations(ae, X_flat, info_df, n_revisions, nb_name):
 
 	df_out = pd.DataFrame(csv_out, columns=header)
 	df_out.to_csv('../../Output/{}.csv'.format(nb_name), index=False)
-	return True
+	return df_out
 
 def save_tsne_projection(info_df, n_revisions, nb_name):
     # Write csv headers
@@ -221,8 +220,7 @@ def save_tsne_projection(info_df, n_revisions, nb_name):
 
     df_out = pd.DataFrame(csv_out, columns=header)
     df_out.to_csv('../../Output/{}.csv'.format(nb_name), index=False)
-
-    return True
+    return df_out
 
 # def save_gaussian_activations(ae, X, info_df, n_revisions, nb_name):
 def save_tabular_activations(ae, X, info_df, n_revisions, nb_name):
@@ -249,7 +247,7 @@ def save_tabular_activations(ae, X, info_df, n_revisions, nb_name):
 
     df_out = pd.DataFrame(csv_out, columns=header)
     df_out.to_csv('../../Output/{}.csv'.format(nb_name), index=False)
-    return True
+    return df_out
 
 def tabular_to_dtsne_format(X, info_df):
     Xs = []
