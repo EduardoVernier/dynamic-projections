@@ -110,63 +110,19 @@ def load_tabular(dataset_path):
     info_df['X_index'] = info_df.index
     info_df.index = range(len(info_df))
     info_df['X_index'] = range(len(info_df))
-    return np.array(X), info_df, len(glob.glob(dataset_path + '*'))
-
-# def save_quickdraw_vae_activations(encoder, X_flat, info_df, n_revisions, nb_name):
-def save_drawing_vae_activations(encoder, X_flat, info_df, n_revisions, nb_name):
-    # Collect all activations
-    middle = len(encoder.layers) - 3
-    middle_layer_output = K.function([encoder.layers[0].input],
-                                     [encoder.layers[middle].output])
-    layer_output = middle_layer_output([X_flat])[0]
-
-    # Write activations to csv
-    header = ['id']
-    for t in range(n_revisions):
-        for d in range(layer_output.shape[1]):
-            header.append('t{}d{}'.format(t, d))
-
-    csv_out = []
-    gb = info_df.groupby(['drawing_cat_str', 'drawing_id'])
-    for index, df in gb:  # Iterave over all drawing sequences
-        drawing_id = index[0] + '-' + str(index[1])
-        item_row = [drawing_id]
-        for index, _ in df.sort_values('t').iterrows():  # For all timesteps
-            for d in range(layer_output.shape[1]):  # Add all dimensions
-                item_row.append(layer_output[index][d])
-        csv_out.append(item_row)
-
-    df_out = pd.DataFrame(csv_out, columns=header)
-    df_out.to_csv('../../Output/{}.csv'.format(nb_name), index=False)
-    return df_out
+    original_indexes = pd.read_csv(glob.glob(dataset_path + '*')[0], index_col=0).index.values
+    return np.array(X), info_df, len(glob.glob(dataset_path + '*')), original_indexes
 
 
-# def save_gaussian_vae_activations(encoder, X_flat, info_df, n_revisions, nb_name):
-def save_tabular_vae_activations(encoder, X_flat, info_df, n_revisions, nb_name):
-    # Collect all activations
-    middle = len(encoder.layers) - 3
-    middle_layer_output = K.function([encoder.layers[0].input],
-                                     [encoder.layers[middle].output])
-    layer_output = middle_layer_output([X_flat])[0]
-
-    # Write activations to csv
-    header = ['id']
-    for t in range(n_revisions):
-        for d in range(layer_output.shape[1]):
-            header.append('t{}d{}'.format(t, d))
-
-    csv_out = []
-    gb = info_df.groupby(['point_id'])
-    for index, df in gb:  # Iterave over all drawing sequences
-        item_row = [index]
-        for index, _ in df.sort_values('t').iterrows():  # For all timesteps
-            for d in range(layer_output.shape[1]):  # Add all dimensions
-                item_row.append(layer_output[index][d])
-        csv_out.append(item_row)
-
-    df_out = pd.DataFrame(csv_out, columns=header)
-    df_out.to_csv('../../Output/{}.csv'.format(nb_name), index=False)
-    return df_out
+def tabular_to_dtsne_format(X, info_df):
+    Xs = []
+    y = []
+    for i, df in info_df.groupby('t'):
+        df = df.sort_values('point_id')
+        if len(y) == 0:
+            y = list(df['point_id'])
+        Xs.append(X[df.index])
+    return Xs, y
 
 
 # def save_quickdraw_activations(ae, X_flat, info_df, n_revisions, nb_name):
@@ -197,33 +153,36 @@ def save_drawing_activations(ae, X_flat, info_df, n_revisions, nb_name):
 	df_out.to_csv('../../Output/{}.csv'.format(nb_name), index=False)
 	return df_out
 
-def save_tsne_projection(info_df, n_revisions, nb_name):
-    # Write csv headers
+
+def save_drawing_vae_activations(encoder, X_flat, info_df, n_revisions, indexes_order, nb_name):
+    # Collect all activations
+    middle = len(encoder.layers) - 3
+    middle_layer_output = K.function([encoder.layers[0].input],
+                                     [encoder.layers[middle].output])
+    layer_output = middle_layer_output([X_flat])[0]
+
+    # Write activations to csv
     header = ['id']
     for t in range(n_revisions):
-        for d in range(len(info_df['projection'][0])):
+        for d in range(layer_output.shape[1]):
             header.append('t{}d{}'.format(t, d))
 
-    # Write data of each element.
     csv_out = []
-    gb = info_df.groupby(['drawing_cat_str', 'drawing_id'])
-
-    for index, df in gb:  # Iterave over all drawing sequences
-        drawing_id = index[0] + '-' + str(index[1])
-        item_row = [drawing_id]
-
+    for index in indexes_order:
+        df = info_df[info_df.point_id == index]
+        item_row = [index]
         for index, _ in df.sort_values('t').iterrows():  # For all timesteps
-            for d in range(len(info_df['projection'][0])):  # Add all dimensions
-                item_row.append(info_df['projection'][index][d])
-
+            for d in range(layer_output.shape[1]):  # Add all dimensions
+                item_row.append(layer_output[index][d])
         csv_out.append(item_row)
+
 
     df_out = pd.DataFrame(csv_out, columns=header)
     df_out.to_csv('../../Output/{}.csv'.format(nb_name), index=False)
     return df_out
 
-# def save_gaussian_activations(ae, X, info_df, n_revisions, nb_name):
-def save_tabular_activations(ae, X, info_df, n_revisions, nb_name):
+
+def save_tabular_activations(ae, X, info_df, n_revisions, indexes_order, nb_name):
     # Collect all activations
     middle = int(len(ae.layers)/2 - 1)
     middle_layer_output = K.function([ae.layers[0].input],
@@ -237,8 +196,8 @@ def save_tabular_activations(ae, X, info_df, n_revisions, nb_name):
             header.append('t{}d{}'.format(t, d))
 
     csv_out = []
-    gb = info_df.groupby(['point_id'])
-    for index, df in gb:  # Iterave over all drawing sequences
+    for index in indexes_order:
+        df = info_df[info_df.point_id == index]
         item_row = [index]
         for index, _ in df.sort_values('t').iterrows():  # For all timesteps
             for d in range(layer_output.shape[1]):  # Add all dimensions
@@ -249,12 +208,30 @@ def save_tabular_activations(ae, X, info_df, n_revisions, nb_name):
     df_out.to_csv('../../Output/{}.csv'.format(nb_name), index=False)
     return df_out
 
-def tabular_to_dtsne_format(X, info_df):
-    Xs = []
-    y = []
-    for i, df in info_df.groupby('t'):
-        df = df.sort_values('point_id')
-        if len(y) == 0:
-            y = list(df['point_id'])
-        Xs.append(X[df.index])
-    return Xs, y
+
+# def save_gaussian_vae_activations(encoder, X_flat, info_df, n_revisions, nb_name):
+def save_tabular_vae_activations(encoder, X_flat, info_df, n_revisions, indexes_order, nb_name):
+    # Collect all activations
+    middle = len(encoder.layers) - 3
+    middle_layer_output = K.function([encoder.layers[0].input],
+                                     [encoder.layers[middle].output])
+    layer_output = middle_layer_output([X_flat])[0]
+
+    # Write activations to csv
+    header = ['id']
+    for t in range(n_revisions):
+        for d in range(layer_output.shape[1]):
+            header.append('t{}d{}'.format(t, d))
+
+    csv_out = []
+    for index in indexes_order:
+        df = info_df[info_df.point_id == index]
+        item_row = [index]
+        for index, _ in df.sort_values('t').iterrows():  # For all timesteps
+            for d in range(layer_output.shape[1]):  # Add all dimensions
+                item_row.append(layer_output[index][d])
+        csv_out.append(item_row)
+
+    df_out = pd.DataFrame(csv_out, columns=header)
+    df_out.to_csv('../../Output/{}.csv'.format(nb_name), index=False)
+    return df_out
