@@ -61,14 +61,13 @@ Google has a little fun project called Quick Draw (https://quickdraw.withgoogle.
 [Example](Docs/images/sorts-imgs.png) -
 [Video](Docs/videos/sorts-avi-10.avi)
 
-Intermediate states of 8 sorting algorithms. Arrays initially have 100 random elements. Based on franciscouzo.github.io/sort/ .
+Intermediate states of 8 sorting algorithms. Arrays initially have 100 random elements. Based on franciscouzo.github.io/sort/
 
 **10. walk** - 300 observations - 50 timesteps - 100 dimensions - 3 classes -
 [Example](Docs/images/walk-img.png) -
 [Video](Docs/videos/walk-avi-10.avi)
 
 There are 3 classes, in one the values of the dimensions start low and go high, one the values start high and decrease over time, and in the last, they stay roughly the same. For all of them there is noise added (see example). This is supposed to be a "ground-truth" dataset with simple dynamics.
-
 
 **TABLE**
 
@@ -85,17 +84,16 @@ There are 3 classes, in one the values of the dimensions start low and go high, 
 | 9  | sorts      | 80      | 100         | 100    | 8         |
 | 10 | walk       | 300     | 50          | 100    | 3         |
 
+
 ### Formatting
 
 **Image datasets** -- The directory hierarchy doesn’t matter, all the metadata should be contained in the file name. `<class>-<id>-<time>.png`, e.g. `airplane-1234-10.png` -- 10th revision of airplane with id 1234.
 
 **Tabular datasets** -- Each timestep is a single csv file named `<dataset_name>-<time>.csv`. The first column is the id and the next are the n features. I think this dtsne implementation only handles numerical features, so nothing categorical here for now.
 
-**Output data (actual projections)** --- `./Output`
+**Output data (actual projections)** --- `./Output` -
+Single csv file with information about the model in the name in the format `<dataset>-<model_info>.csv`, as in `quickdraw-AE_728c_200c_p_d_200f_500f_2f.csv`. The previous string is an hypothetical filename for the results of projection using an AE with two convolutional layers of 728 and 200 kernels each, followed by max pooling and dropout layers and three dense layers of 200, 500 and 2 neurons each. As for the contents of the file, the first column is the `id`, and the next are `t0d0, t0d1, ... t0dX, t1d0, ..., tTdX.` The number 't' is the timestep and 'd' is the representation dimension of each value.
 
-Single csv file with information about the model in the name in the format `<dataset>-<model_info>.csv`, as in `quickdraw-AE_728c_200c_p_d_200f_500f_2f.csv`. The previous string is an hypothetical filename for the results of projection using an AE with two convolutional layers of 728 and 200 kernels each, followed by max pooling and dropout layers and three dense layers of 200, 500 and 2 neurons each.
-
-As for the contents of the file, the first column is the `id`, and the next are `t0d0, t0d1, ... t0dX, t1d0, ..., tTdX.` The number 't' is the timestep and 'd' is the representation dimension of each value.
 
 ## Generating the projections
 
@@ -103,7 +101,6 @@ As for the contents of the file, the first column is the `id`, and the next are 
 The notebooks should contain information about training total time and performance metric (training/test accuracy and loss). The `Shared.py` file contains methods that might be useful for all notebooks and projection techniques e.g., saving projection, loading data.
 
 ##### Dynamic/static t-sne ---  `./Models/tsne`
-
 From the root folder, we need to add the `tsne` folder to the PYTHONPATH and then run the dtsne_wrapper script.
 ```
 export PYTHONPATH=${PYTHONPATH}:${PWD}/Models/tsne
