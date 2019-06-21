@@ -71,6 +71,7 @@ There are 3 classes, in one the values of the dimensions start low and go high, 
 
 
 **TABLE**
+
 |    | dataset_id | n_items | n_timesteps | n_dims | n_classes |
 |:---|:-----------|:--------|:------------|:-------|:----------|
 | 1  | cartolastd | 696     | 19          | 17     | 5         |
