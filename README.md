@@ -1,14 +1,29 @@
 # Dynamic projections
 
-Set up virtual env and dependencies using pipenv.
-https://pipenv.readthedocs.io/en/latest/
-```
-pip install pipenv
-pipenv run pip install pip==18.0
-pipenv install
-sudo apt-get install python3-tk
-```
-To run a script use `pipenv run python <script_name>.py`. To open notebooks use `pipenv run jupyter notebook` or create a new shell with `pipenv shell` and then call `jupyter notebook`.
+## Introduction
+TODO
+
+## Projection methods
+
+TODO talk about implementation/source
+
+**PCA** - The main linear technique for dimensionality reduction, principal component analysis, performs a linear mapping of the data to a lower-dimensional space in such a way that the variance of the data in the low-dimensional representation is maximized (TODO copied from wikipedia). Strategy 1 (pca_s1) computes PCA independently for each timestep. Strategy 4 (pca_s4) works by grouping all timesteps together and computing PCA once.
+
+**t-SNE** - TODO
+
+**dt-SNE** - TODO
+
+**Autoencoders**
+In the context of dimensionality reduction, you take an (usually) hourglass-shaped neural network and train it to basically reconstruct the input. After trained, the middle layer acts as a compact (latent) representation of the original data. The middle layer needs to have a number of neurons equivalent to the dimensionality of the space we want to project out data into. We tested 4 different "types" of autoencoders:
+
+|       |                                                        |                                                                        |
+|:-----:|:-------------------------------------------------------|:-----------------------------------------------------------------------|
+|  AE   | _Dense autoencoders_                                   | Fully connected layers.                                                |
+| C2AE  | _Convolutional autoencoders_                           | Used only on the image-based datasets.                                 |
+|  VAE  | _Variational autoencoders with fully connected layers_ | trying to get better internal representations by avoiding overfitting. |
+| C2VAE | _Variational autoencoders with convolutional layers_   | possibly better of both worlds regarding input reconstruction ability. |
+
+TODO How to decode the names to understand number of layers, neurons per layer, epochs of training, etc.
 
 ## Datasets ---  `./Datasets`
 
@@ -39,7 +54,7 @@ Sound samples of 8 classes (brushing_teeth, chainsaw, crying_baby, engine, laugh
 **5. gaussians** - 2000 observations - 10 timesteps - 100 dimensions - 10 classes -
 [Video](Docs/videos/gaussians-avi-10.avi)
 
-Dataset from Rauber et. al's dt-sne paper. _“We create the multivariate Gaussians dataset specifically as a controlled experiment for dynamic t-SNE. Firstly, we sample 200 observations from each of 10 distinct (isotropic) 100-dimensional multivariate Gaussian distributions with variance 0.1. We combine the resulting 2000 observations into a single dataset D[1]. Each multivariate Gaussian has a distinct mean, which is chosen uniformly between the standard basis vectors for R 100 . Given D[t], the dataset D[t + 1] is created as follows. Each observation x[t + 1] ∈ D[t + 1] corresponds to an observation x[t] ∈ D[t] moved 10% of the remaining distance closer to the mean of its corresponding multivariate Gaussian. In simple terms, each of the 10 clusters becomes more compact as t increases. We consider T = 10 datasets.”_
+Dataset from Rauber et. al's dt-sne paper. _“We create the multivariate Gaussians dataset specifically as a controlled experiment for dynamic t-SNE. Firstly, we sample 200 observations from each of 10 distinct (isotropic) 100-dimensional multivariate Gaussian distributions with variance 0.1. We combine the resulting 2000 observations into a single dataset D\[1\]. Each multivariate Gaussian has a distinct mean, which is chosen uniformly between the standard basis vectors for R 100 . Given D\[t\], the dataset D\[t + 1\] is created as follows. Each observation x\[t + 1\] ∈ D\[t + 1\] corresponds to an observation x\[t\] ∈ D\[t\] moved 10% of the remaining distance closer to the mean of its corresponding multivariate Gaussian. In simple terms, each of the 10 clusters becomes more compact as t increases. We consider T = 10 datasets.”_
 
 **6. nnset** - 80 observations - 30 timesteps - 8070 dimensions - 8 classes -
 [Example](Docs/images/nnset-states.png) -
@@ -84,23 +99,67 @@ There are 3 classes, in one the values of the dimensions start low and go high, 
 | 9  | sorts      | 80      | 100         | 100    | 8         |
 | 10 | walk       | 300     | 50          | 100    | 3         |
 
+## Metrics
+TODO - base off of a previous report.  
 
-### Formatting
+## Results
 
-**Image datasets** -- The directory hierarchy doesn’t matter, all the metadata should be contained in the file name. `<class>-<id>-<time>.png`, e.g. `airplane-1234-10.png` -- 10th revision of airplane with id 1234.
+Here is the metric average for all dataset for each method.
 
-**Tabular datasets** -- Each timestep is a single csv file named `<dataset_name>-<time>.csv`. The first column is the id and the next are the n features. I think this dtsne implementation only handles numerical features, so nothing categorical here for now.
+![](Plots/Figs/aggregate_matrix.svg)
 
-**Output data (actual projections)** --- `./Output` -
-Single csv file with information about the model in the name in the format `<dataset>-<model_info>.csv`, as in `quickdraw-AE_728c_200c_p_d_200f_500f_2f.csv`. The previous string is an hypothetical filename for the results of projection using an AE with two convolutional layers of 728 and 200 kernels each, followed by max pooling and dropout layers and three dense layers of 200, 500 and 2 neurons each. As for the contents of the file, the first column is the `id`, and the next are `t0d0, t0d1, ... t0dX, t1d0, ..., tTdX.` The number 't' is the timestep and 'd' is the representation dimension of each value.
+Let's break this plot down. Light colors represent good metric results. The colormap was normalized independently by the min and max of each column. We removed convolutional autoencoders from this plot because they are only used in two datasets.
 
+The leftmost block represents **stability** metrics. We can clearly see that, on average, pca_s4 and AE-based methods score very highly in this regard.  Predictably, tsne_s1, that is, tsne computed independently for each timestep, is the most unstable of the techniques.
 
-## Generating the projections
+The next two blocks relate to **spatial** metrics. The first one represents the ability of a method to preserve the distances from the nD space in mD, while the last block measures the ability to preserve neighbors in nD or members of the same class close together in mD.
 
-##### Autoencoders ---  `./Models/ae`
+Here the results surprised me. I always thought that PCA was pretty good at preserving distances, but if you want to better understand the nD neighborhoods, you would be better off with t-SNE. Our results confirms the first hypothesis, PCA (and AEs) are better than t-SNE at distance preservation, but, interestingly, t-SNE wasn't vastly superior than the other techniques regarding neighborhood preservation/hits.
+
+So, very objectively, just looking at how light each row is, we can say that pca_s4 and AE/VAE are the best techniques for dynamic dimensionality reduction, as they score highly on all of our tested metrics.
+
+Individual results of the same metrics for each dataset were also generated and are available [here](Plots/Figs/individual_plots.svg). Note in the example below (cartolastd) that the neighborhood hit/preservation metric is not averaged and we see the actual curves.
+
+![](Plots/Figs/cartola-metrics.png)
+
+A more interesting look at the stability measurements of the same dataset is given below. Each column concerns one method. The first row shows the actual trails left by the moving points and their final positions. The second row is a plot showing the relationship of nD and mD movements for each point and each timestep. Ideally, we would want to see something resembling a diagonal straight line. The y axis is not normalized, maybe it should be. The last row is a histogram that represents the rank difference of the nD and mD movements. Ideally, we would want these differences to be minimized, that is, the k-th largest mD movement should correspond to the k-th largest nD movement. In this plot, this would be represented as a tall gray bar / middle bucket.
+
+![](Plots/Figs/trails-cartolastd.png)
+
+All datasets tell roughly the same story with one exception, the "walk" dataset. And I don't really understand why, the behavior seem in the [video](Docs/videos/walk-avi-10.avi) is exactly what I was expecting to see. The stability visualizations, however, tells us that, likely, different classes are moving at different rates. In the PCA and AE/VAE plots we see 2 movement clusters. My guess is that the green points are stiffer than the others, but to confirm that we need to do the same plots but instead of coloring all points red, we use the class color. I will do this soon.
+
+![](Plots/Figs/trails-walk.png)
+
+Now let's look at the more subtle aspects of this study. When and why a technique might fail.
+
+**Causes of unstable behavior**
+
+pca s1
+![](Docs/images/pca-unstable.png)
+
+tsne s1
+![](Docs/images/tsne-unstable.png)
+
+**Causes of movement restriction**
+
+See walk tsne s4.
+
+## Recreating the results / Testing new methods and datasets
+Set up virtual env and dependencies using pipenv. https://pipenv.readthedocs.io/en/latest/
+```
+pip install pipenv
+pipenv run pip install pip==18.0
+pipenv install
+sudo apt-get install python3-tk
+```
+To run a script use `pipenv run python <script_name>.py`. To open notebooks use `pipenv run jupyter notebook` or create a new shell with `pipenv shell` and then call `jupyter notebook`.
+
+### Generating the projections
+
+**Autoencoders** ---  `./Models/ae`
 The notebooks should contain information about training total time and performance metric (training/test accuracy and loss). The `Shared.py` file contains methods that might be useful for all notebooks and projection techniques e.g., saving projection, loading data.
 
-##### Dynamic/static t-sne ---  `./Models/tsne`
+**Dynamic/static t-sne** ---  `./Models/tsne`
 From the root folder, we need to add the `tsne` folder to the PYTHONPATH and then run the dtsne_wrapper script.
 ```
 export PYTHONPATH=${PYTHONPATH}:${PWD}/Models/tsne
@@ -115,21 +174,31 @@ python Models/tsne/tsne_s1.py ./Datasets/gaussians 70  # or
 python Models/tsne/tsne_s4.py ./Datasets/gaussians 70
 ```
 
-##### Principal component analysis ---  `./Models/pca`
+**Principal component analysis** ---  `./Models/pca`
 ```
 export PYTHONPATH=${PYTHONPATH}:${PWD}/Models/
 python Models/pca/pca_s1.py ./Datasets/gaussians  # or
 python Models/pca/pca_s4.py ./Datasets/gaussians
 ```
 
-## Visualizing the projections
+**Formatting**
+
+**Image datasets** -- The directory hierarchy doesn’t matter, all the metadata should be contained in the file name. `<class>-<id>-<time>.png`, e.g. `airplane-1234-10.png` -- 10th revision of airplane with id 1234.
+
+**Tabular datasets** -- Each timestep is a single csv file named `<dataset_name>-<time>.csv`. The first column is the id and the next are the n features. I think this dtsne implementation only handles numerical features, so nothing categorical here for now.
+
+**Output data (actual projections)** --- `./Output` -
+Single csv file with information about the model in the name in the format `<dataset>-<model_info>.csv`, as in `quickdraw-AE_728c_200c_p_d_200f_500f_2f.csv`. The previous string is an hypothetical filename for the results of projection using an AE with two convolutional layers of 728 and 200 kernels each, followed by max pooling and dropout layers and three dense layers of 200, 500 and 2 neurons each. As for the contents of the file, the first column is the `id`, and the next are `t0d0, t0d1, ... t0dX, t1d0, ..., tTdX.` The number 't' is the timestep and 'd' is the representation dimension of each value.
+
+
+### Visualizing the projections
 There is a simple python tool based on matplotlib to quickly show and help us debug the generated projections. To use it, call
 ```
 python Vis/Main.py ./Output/gaussians-pca_s4.csv ./Output/gaussians-AE_10f_2f_20ep.csv
 python Vis/Main.py $(find Output/ -type f -name cartolastd*)
 ```
 
-## Computing the metrics
+### Computing the metrics
 The code for the metrics is located in a notebook called `template.ipynb`. For each dataset we use a tool called Papermill to instantiate a new notebook from the template. The two parameters that are needed are the output notebook path (remember to change name to dataset_id) and the list of output/projection files we want to analyse. This is the code that generates the analysis for the gaussians dataset:
 ```
 papermill Metrics/template.ipynb ./Metrics/gaussians.ipynb --log-output -p projection_paths 'Output/gaussians-AE_10f_10f_2f_20ep.csv Output/gaussians-AE_10f_2f_20ep.csv Output/gaussians-tsne_s1_70p.csv Output/gaussians-tsne_s4_70p.csv Output/gaussians-dtsne_70p_0-1l.csv Output/gaussians-pca_s1.csv Output/gaussians-pca_s4.csv'
@@ -137,14 +206,16 @@ papermill Metrics/template.ipynb ./Metrics/gaussians.ipynb --log-output -p proje
 The results are written in a csv file that goes into the `./Metrics/Results` directory.
 To check the (tqdm) progress see the `log_<dataset_id>` file in real time.
 
-## Generating videos
+### Generating videos
 
 ```
 papermill Plots/trails-video.ipynb Plots/temp.ipynb --log-output -p dataset_id gaussians
 ```
 
-## Plotting the metric results
-TODO
+### Plotting the metric results
+Simply run the `Plots/plots.ipynb` notebook.
 
-## Ploting static trail viz
-TODO
+### Ploting static trail viz
+```
+papermill Plots/trails-image.ipynb Plots/temp.ipynb --log-output -p dataset_id gaussians
+```
