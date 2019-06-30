@@ -1,12 +1,18 @@
 # Dynamic projections
+E.F. Vernier,
+R. Garcia,
+I.P. Silva,
+J.L.D. Comba,
+A.C. Telea, and
+L.G. Nonato
 
-**Table of content**
+**Table of contents**
 
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Introduction](#introduction)
 - [Projection methods](#projection-methods)
-- [Datasets ---  `./Datasets`](#datasets-datasets)
+- [Datasets](#datasets)
 - [Metrics](#metrics)
 - [Results](#results)
 - [Recreating the results / Testing new methods and datasets](#recreating-the-results-testing-new-methods-and-datasets)
@@ -44,7 +50,7 @@ In the context of dimensionality reduction, you take an (usually) hourglass-shap
 
 TODO How to decode the names to understand number of layers, neurons per layer, epochs of training, etc.
 
-## Datasets ---  `./Datasets`
+## Datasets
 
 The notebooks and files that generated the datasets are available [here](https://drive.google.com/drive/folders/1MXJK2mqH015pAohuBawVIQeqgB38JAsy?usp=sharing).
 
