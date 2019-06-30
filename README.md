@@ -39,10 +39,9 @@ TODO
 
 **t-SNE** - This method converts the nD distances between data points to joint probabilities and tries to minimize the Kullback-Leibler divergence between the joint probabilities of the low-dimensional mD embedding and the high-dimensional nD data. This usually results in good neighborhood preservation. Our implementation is based off the scikit-learn implementation and the perplexity is set as default (30).
 
-**dt-SNE** - This method extends t-SNE to deal with dynamic data by adding a ~stability~ term (lambda) to the cost function.
+**dt-SNE** - This method extends t-SNE to deal with dynamic data by adding a stability term (lambda) to the cost function.
 
-**Autoencoders**
-In the context of dimensionality reduction, we take a (usually) hourglass-shaped neural network and train it to reconstruct the input. After training, the middle layer acts as a compact (latent) representation of the original data. The middle layer has to have a number of neurons equivalent to the dimensionality of the space we want to project out data into. We tested four different "types" of autoencoders:
+**Autoencoders** - In the context of dimensionality reduction, we take a (usually) hourglass-shaped neural network and train it to reconstruct the input. After training, the middle layer acts as a compact (latent) representation of the original data. The middle layer has to have a number of neurons equivalent to the dimensionality of the space we want to project out data into. We tested four different "types" of autoencoders:
 
 |       |                                                        |                                                                        |
 |:-----:|:-------------------------------------------------------|:-----------------------------------------------------------------------|
