@@ -9,4 +9,5 @@ Metrics/log*
 Plots/Anim
 !Plots/Anim/*/*.avi
 Plots/Raw
+Plots/temp.ipynb
 _temp/

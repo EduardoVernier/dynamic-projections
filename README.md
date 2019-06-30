@@ -1,5 +1,24 @@
 # Dynamic projections
 
+**Table of content**
+
+<!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [Introduction](#introduction)
+- [Projection methods](#projection-methods)
+- [Datasets ---  `./Datasets`](#datasets-datasets)
+- [Metrics](#metrics)
+- [Results](#results)
+- [Recreating the results / Testing new methods and datasets](#recreating-the-results-testing-new-methods-and-datasets)
+	- [Generating the projections](#generating-the-projections)
+	- [Visualizing the projections](#visualizing-the-projections)
+	- [Computing the metrics](#computing-the-metrics)
+	- [Generating videos](#generating-videos)
+	- [Plotting the metric results](#plotting-the-metric-results)
+	- [Ploting static trail viz](#ploting-static-trail-viz)
+
+<!-- /TOC -->
+
 ## Introduction
 TODO
 
@@ -122,17 +141,24 @@ Individual results of the same metrics for each dataset were also generated and 
 
 ![](Plots/Figs/cartola-metrics.png)
 
-A more interesting look at the stability measurements of the same dataset is given below. Each column concerns one method. The first row shows the actual trails left by the moving points and their final positions. The second row is a plot showing the relationship of nD and mD movements for each point and each timestep. Ideally, we would want to see something resembling a diagonal straight line. The y axis is not normalized, maybe it should be. The last row is a histogram that represents the rank difference of the nD and mD movements. Ideally, we would want these differences to be minimized, that is, the k-th largest mD movement should correspond to the k-th largest nD movement. In this plot, this would be represented as a tall gray bar / middle bucket.
+A more interesting look at the stability measurements of the same dataset is given below. Each column concerns one method. The first row shows the actual trails left by the moving points and their final positions. The second row is a plot showing the relationship of nD and mD movements for each point and each timestep. Ideally, we would want to see something resembling a diagonal straight line. The y axis is not normalized/standardized, maybe it should be. The last row is a histogram that represents the rank difference of the nD and mD movements. Ideally, we would want these differences to be minimized, that is, the k-th largest mD movement should correspond to the k-th largest nD movement. In this plot, this would be represented as a tall gray bar / middle bucket.
 
 ![](Plots/Figs/trails-cartolastd.png)
 
-All datasets tell roughly the same story with one exception, the "walk" dataset. And I don't really understand why, the behavior seem in the [video](Docs/videos/walk-avi-10.avi) is exactly what I was expecting to see. The stability visualizations, however, tells us that, likely, different classes are moving at different rates. In the PCA and AE/VAE plots we see 2 movement clusters. My guess is that the green points are stiffer than the others, but to confirm that we need to do the same plots but instead of coloring all points red, we use the class color. I will do this soon.
+All datasets tell roughly the same story with one exception, the "walk" dataset. And I don't really understand why, the behavior seem in the [video](Docs/videos/walk-avi-10.avi) is exactly what I was expecting to see. The stability visualizations, however, tells us that, likely, different classes are moving at different rates. In the PCA and AE/VAE plots we see 2 movement clusters.
 
 ![](Plots/Figs/trails-walk.png)
 
-Now let's look at the more subtle aspects of this study. When and why a technique might fail.
+I decided to investigate this. I colored points by their class, same as in the previous image and first row. No pattern seen here.
 
-**Causes of unstable behavior**
+![](Docs/images/walk-classscatter.png)
+
+Then I decided to color them by timestep using a colormap that goes from red to yellow to green. Now we see clear separation! With PCA/AE/VAE, points in the first timestep (red) that change the same amount in nD as the last timestep points (green), move very much less in the mD space. I am not sure why that is the case, any ideas? In any case, our metrics don't like that behavior.
+
+![](Docs/images/walk-timescatter.png)
+
+
+**TODO Causes of unstable behavior**
 
 pca s1
 ![](Docs/images/pca-unstable.png)
@@ -140,9 +166,12 @@ pca s1
 tsne s1
 ![](Docs/images/tsne-unstable.png)
 
-**Causes of movement restriction**
+**TODO Causes of movement restriction**
 
 See walk tsne s4.
+
+**TODO Why pca s4 and AEs are stable**
+
 
 ## Recreating the results / Testing new methods and datasets
 Set up virtual env and dependencies using pipenv. https://pipenv.readthedocs.io/en/latest/
