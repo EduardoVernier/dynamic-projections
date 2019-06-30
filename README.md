@@ -34,7 +34,6 @@ E.F. Vernier, R. Garcia, I.P. da Silva, J.L.D. Comba, A.C. Telea, and L.G. Nonat
 TODO
 
 ## Projection methods
-
 **PCA** - A technique for dimensionality reduction that performs a linear mapping of the data to a lower-dimensional space maximizing the variance of the data in the low-dimensional representation. We created a wrapper that around the scikit-learn implementation that offers two usage modes: Strategy 1 (pca_s1) computes PCA independently for each timestep. Strategy 4 (pca_s4) works by grouping all timesteps and computing PCA once. The terminology was borrowed from the dt-SNE paper.
 
 **t-SNE** - This method converts the nD distances between data points to joint probabilities and tries to minimize the Kullback-Leibler divergence between the joint probabilities of the low-dimensional mD embedding and the high-dimensional nD data. This usually results in good neighborhood preservation. Our implementation is based off the scikit-learn implementation and the perplexity is set as default (30).
@@ -55,7 +54,6 @@ We experiment with different optimizers, architectures, training routines, etc. 
 IDEAS FOR THE FUTURE: (a) Can we extend UMAP the same way that Paulo extended t-SNE for dynamic data. (b) Would linear discriminant analysis with strategy 4 make sense?
 
 ## Datasets
-
 The notebooks and files that generated the datasets are available [here](https://drive.google.com/drive/folders/1MXJK2mqH015pAohuBawVIQeqgB38JAsy?usp=sharing).
 
 **1. cartolastd** - 696 observations - 19 timesteps - 17 dimensions - 5 classes -
@@ -132,7 +130,6 @@ There are three classes, in one the values of the dimensions start low and go hi
 TODO - base off of a previous report.  
 
 ## Results
-
 Here is the metric average for all dataset for each method.
 
 ![](Plots/Figs/aggregate_matrix.svg)
@@ -155,15 +152,15 @@ A more interesting look at the stability measurements of the same dataset is giv
 
 ![](Plots/Figs/trails-cartolastd.png)
 
-All datasets tell roughly the same story with one exception, the "walk" dataset. And I don't understand why, the behavior seen in the [video](Docs/videos/walk-avi-10.avi) is exactly what I was expecting to see. The stability visualizations, however, tells us that, likely, different classes are moving at different rates. In the PCA and AE/VAE plots, we see two movement clusters.
+All datasets tell roughly the same story with one exception, the "walk" dataset. And I don't understand why, the behavior seen in the [video](Docs/videos/walk-avi-10.avi) is exactly what I was expecting to see. The stability plots, however, tells us that, there are discontinuities in the movement rates. In the PCA and AE/VAE plots, we see two movement rate clusters.
 
 ![](Plots/Figs/trails-walk.png)
 
-I decided to investigate this. I colored points by their class, the same as in the previous image and first row. No pattern is seen here.
+To investigate this, I colored movement measures by their class, the same as in the previous image and first row, but we see no pattern appear.
 
 ![](Docs/images/walk-classscatter.png)
 
-Then I decided to color them by timestep using a colormap that goes from red to yellow to green. Now we see clear separation! With PCA/AE/VAE, points in the first timestep (red) that change the same amount in nD as the last timestep points (green), move very much less in the mD space. I am not sure why that is the case, any ideas? In any case, our metrics don't like that behavior.
+Then I decided to color them by timestep using a colormap that goes from red to yellow to green. Now we see clear separation! With PCA/AE/VAE, points in the first timestep (red) that change the same amount in nD as the last timestep points (green), move much less in the mD space. I am not sure why that is the case, any ideas? In any case, our metrics don't like that behavior.
 
 ![](Docs/images/walk-timescatter.png)
 
