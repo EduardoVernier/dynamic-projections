@@ -168,9 +168,11 @@ Then I decided to color them by timestep using a colormap that goes from red to 
 **TODO Causes of unstable behavior**
 
 pca s1
+
 ![](Docs/images/pca-unstable.png)
 
 tsne s1
+
 ![](Docs/images/tsne-unstable.png)
 
 **TODO Causes of movement restriction**
@@ -178,6 +180,8 @@ tsne s1
 See walk tsne s4.
 
 **TODO Why pca s4 and AEs are stable**
+
+![](Docs/images/inverse-proj.png)
 
 ## Conclusion, discussion, future work
 TODO
