@@ -1,10 +1,5 @@
 # Dynamic projections
-E.F. Vernier,
-R. Garcia,
-I.P. Silva,
-J.L.D. Comba,
-A.C. Telea, and
-L.G. Nonato
+E.F. Vernier, R. Garcia, I.P. da Silva, J.L.D. Comba, A.C. Telea, and L.G. Nonato
 
 **Table of contents**
 
@@ -15,6 +10,7 @@ L.G. Nonato
 - [Datasets](#datasets)
 - [Metrics](#metrics)
 - [Results](#results)
+- [Conclusion, discussion, future work](#conclusion-discussion-future-work)
 - [Recreating the results / Testing new methods and datasets](#recreating-the-results-testing-new-methods-and-datasets)
 	- [Generating the projections](#generating-the-projections)
 	- [Visualizing the projections](#visualizing-the-projections)
@@ -25,21 +21,28 @@ L.G. Nonato
 
 <!-- /TOC -->
 
+**TODOs**
+
+- [ ] Write introduction.
+- [ ] Write about the metrics. Look up previous reports.
+- [ ] Add references. Markdown doesn't deal with this, so maybe just list them to make things easier in the future.
+- [ ] Conclusion, discussion, future work.
+- [ ] Write about why s1 methods are unstable and present examples. Present any other weird/unexpected behavior.
+- [ ] Explain pca s4 and AE stability (show inverse projection).
+
 ## Introduction
 TODO
 
 ## Projection methods
 
-TODO talk about implementation/source
+**PCA** - A technique for dimensionality reduction that performs a linear mapping of the data to a lower-dimensional space maximizing the variance of the data in the low-dimensional representation. We created a wrapper that around the scikit-learn implementation that offers two usage modes: Strategy 1 (pca_s1) computes PCA independently for each timestep. Strategy 4 (pca_s4) works by grouping all timesteps and computing PCA once. The terminology was borrowed from the dt-SNE paper.
 
-**PCA** - The main linear technique for dimensionality reduction, principal component analysis, performs a linear mapping of the data to a lower-dimensional space in such a way that the variance of the data in the low-dimensional representation is maximized (TODO copied from wikipedia). Strategy 1 (pca_s1) computes PCA independently for each timestep. Strategy 4 (pca_s4) works by grouping all timesteps together and computing PCA once.
+**t-SNE** - This method converts the nD distances between data points to joint probabilities and tries to minimize the Kullback-Leibler divergence between the joint probabilities of the low-dimensional mD embedding and the high-dimensional nD data. This usually results in good neighborhood preservation. Our implementation is based off the scikit-learn implementation and the perplexity is set as default (30).
 
-**t-SNE** - TODO
-
-**dt-SNE** - TODO
+**dt-SNE** - This method extends t-SNE to deal with dynamic data by adding a ~stability~ term (lambda) to the cost function.
 
 **Autoencoders**
-In the context of dimensionality reduction, you take an (usually) hourglass-shaped neural network and train it to basically reconstruct the input. After trained, the middle layer acts as a compact (latent) representation of the original data. The middle layer needs to have a number of neurons equivalent to the dimensionality of the space we want to project out data into. We tested 4 different "types" of autoencoders:
+In the context of dimensionality reduction, we take a (usually) hourglass-shaped neural network and train it to reconstruct the input. After training, the middle layer acts as a compact (latent) representation of the original data. The middle layer has to have a number of neurons equivalent to the dimensionality of the space we want to project out data into. We tested four different "types" of autoencoders:
 
 |       |                                                        |                                                                        |
 |:-----:|:-------------------------------------------------------|:-----------------------------------------------------------------------|
@@ -48,7 +51,9 @@ In the context of dimensionality reduction, you take an (usually) hourglass-shap
 |  VAE  | _Variational autoencoders with fully connected layers_ | trying to get better internal representations by avoiding overfitting. |
 | C2VAE | _Variational autoencoders with convolutional layers_   | possibly better of both worlds regarding input reconstruction ability. |
 
-TODO How to decode the names to understand number of layers, neurons per layer, epochs of training, etc.
+We experiment with different optimizers, architectures, training routines, etc. To decode the names to understand the number of layers, neurons per layer, epochs of training, etc see the section "Generating the projections / Formatting / Output Data" or find the python notebook that generated each model in Models/ae.
+
+IDEAS FOR THE FUTURE: (a) Can we extend UMAP the same way that Paulo extended t-SNE for dynamic data. (b) Would linear discriminant analysis with strategy 4 make sense?
 
 ## Datasets
 
@@ -85,12 +90,12 @@ Dataset from Rauber et. al's dt-sne paper. _“We create the multivariate Gaussi
 [Example](Docs/images/nnset-states.png) -
 [Video](Docs/videos/nnset-avi-10.avi)
 
-This dataset represents the internal states (weights and biases) of a set of neural networks learning to classify MNIST with same architecture but using different optimizers, batch sizes, training data sizes. There doesn't seem to be clear class separation in this dataset.   
+This dataset represents the internal states (weights and biases) of a set of neural networks learning to classify MNIST with same architecture but using different optimizers, batch sizes, training data sizes. There doesn't seem to be a clear class separation in this dataset.   
 
 **7. qtables** - 180 observations - 40 timesteps - 1200 dimensions - 9 classes -
 [Video](Docs/videos/qtables-avi-10.avi)
 
-Each observation is an agent learning to move a car up a hill using the reinforcement learning algorithm Q-learning. The classes represent variations of learning rates and discounts. The car has 3 actions, and the space has 2 features, each divided into 20 discrete steps. Therefore the dataset is 3x20x20 or 1200 dimensions. Code based on this tutorial: https://pythonprogramming.net/q-learning-reinforcement-learning-python-tutorial/.
+Each observation is an agent learning to move a car up a hill using the reinforcement learning algorithm Q-learning. The classes represent variations of learning rates and discounts. The car has 3 actions, and the decision space has 2 features, each divided into 20 discrete steps. Therefore the dataset is 3x20x20 or 1200 dimensions. Code based on this tutorial: https://pythonprogramming.net/q-learning-reinforcement-learning-python-tutorial/.
 
 **8. quickdraw** - 600 observations - 89 timesteps - 784 dimensions (28x28 pixels) - 6 classes -
 [Example](Docs/images/quickdraw-doodles.png) -
@@ -107,7 +112,7 @@ Intermediate states of 8 sorting algorithms. Arrays initially have 100 random el
 [Example](Docs/images/walk-img.png) -
 [Video](Docs/videos/walk-avi-10.avi)
 
-There are 3 classes, in one the values of the dimensions start low and go high, one the values start high and decrease over time, and in the last, they stay roughly the same. For all of them there is noise added (see example). This is supposed to be a "ground-truth" dataset with simple dynamics.
+There are three classes, in one the values of the dimensions start low and go high, one the values start high and decrease over time, and in the last, they stay roughly the same. For all of them, there is noise added (see example). This is supposed to be a "ground-truth" dataset with simple dynamics.
 
 **TABLE**
 
@@ -135,11 +140,11 @@ Here is the metric average for all dataset for each method.
 
 Let's break this plot down. Light colors represent good metric results. The colormap was normalized independently by the min and max of each column. We removed convolutional autoencoders from this plot because they are only used in two datasets.
 
-The leftmost block represents **stability** metrics. We can clearly see that, on average, pca_s4 and AE-based methods score very highly in this regard.  Predictably, tsne_s1, that is, tsne computed independently for each timestep, is the most unstable of the techniques.
+The leftmost block represents **stability** metrics. We can see that, on average, pca_s4 and AE-based methods score very highly in this regard.  Predictably, tsne_s1, that is, t-SNE computed independently for each timestep, is the most unstable of the techniques.
 
-The next two blocks relate to **spatial** metrics. The first one represents the ability of a method to preserve the distances from the nD space in mD, while the last block measures the ability to preserve neighbors in nD or members of the same class close together in mD.
+The next two blocks relate to **spatial** metrics. The first one represents the ability of a method to preserve the distances from the nD space in mD, while the last block measures the ability to maintain neighbors in nD or members of the same class close together in mD.
 
-Here the results surprised me. I always thought that PCA was pretty good at preserving distances, but if you want to better understand the nD neighborhoods, you would be better off with t-SNE. Our results confirms the first hypothesis, PCA (and AEs) are better than t-SNE at distance preservation, but, interestingly, t-SNE wasn't vastly superior than the other techniques regarding neighborhood preservation/hits.
+Here the results surprised me. I always thought that PCA was pretty good at preserving distances, but if you want to better understand the nD neighborhoods, you would be better off with t-SNE. Our results confirm the first hypothesis, PCA (and AEs) are better than t-SNE at distance preservation, but, interestingly, t-SNE wasn't vastly superior to the other techniques regarding neighborhood preservation/hits.
 
 So, very objectively, just looking at how light each row is, we can say that pca_s4 and AE/VAE are the best techniques for dynamic dimensionality reduction, as they score highly on all of our tested metrics.
 
@@ -147,15 +152,15 @@ Individual results of the same metrics for each dataset were also generated and 
 
 ![](Plots/Figs/cartola-metrics.png)
 
-A more interesting look at the stability measurements of the same dataset is given below. Each column concerns one method. The first row shows the actual trails left by the moving points and their final positions. The second row is a plot showing the relationship of nD and mD movements for each point and each timestep. Ideally, we would want to see something resembling a diagonal straight line. The y axis is not normalized/standardized, maybe it should be. The last row is a histogram that represents the rank difference of the nD and mD movements. Ideally, we would want these differences to be minimized, that is, the k-th largest mD movement should correspond to the k-th largest nD movement. In this plot, this would be represented as a tall gray bar / middle bucket.
+A more interesting look at the stability measurements of the same dataset is given below. Each column concerns one method. The first row shows the actual trails left by the moving points and their final positions. The second row is a plot showing the relationship of nD and mD movements for each point and each timestep. Ideally, we would want to see something resembling a diagonal straight line. The y-axis is not normalized/standardized, maybe it should be. The last row is a histogram that represents the rank difference of the nD and mD movements. Ideally, we would want these differences to be minimized, that is, the k-th largest mD movement should correspond to the k-th largest nD movement. In this plot, this would be represented as a tall gray bar / middle bucket.
 
 ![](Plots/Figs/trails-cartolastd.png)
 
-All datasets tell roughly the same story with one exception, the "walk" dataset. And I don't really understand why, the behavior seem in the [video](Docs/videos/walk-avi-10.avi) is exactly what I was expecting to see. The stability visualizations, however, tells us that, likely, different classes are moving at different rates. In the PCA and AE/VAE plots we see 2 movement clusters.
+All datasets tell roughly the same story with one exception, the "walk" dataset. And I don't understand why, the behavior seen in the [video](Docs/videos/walk-avi-10.avi) is exactly what I was expecting to see. The stability visualizations, however, tells us that, likely, different classes are moving at different rates. In the PCA and AE/VAE plots, we see two movement clusters.
 
 ![](Plots/Figs/trails-walk.png)
 
-I decided to investigate this. I colored points by their class, same as in the previous image and first row. No pattern seen here.
+I decided to investigate this. I colored points by their class, the same as in the previous image and first row. No pattern is seen here.
 
 ![](Docs/images/walk-classscatter.png)
 
@@ -178,6 +183,8 @@ See walk tsne s4.
 
 **TODO Why pca s4 and AEs are stable**
 
+## Conclusion, discussion, future work
+TODO
 
 ## Recreating the results / Testing new methods and datasets
 Set up virtual env and dependencies using pipenv. https://pipenv.readthedocs.io/en/latest/
