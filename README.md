@@ -6,9 +6,12 @@ E.F. Vernier, R. Garcia, I.P. da Silva, J.L.D. Comba, A.C. Telea, and L.G. Nonat
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Introduction](#introduction)
+- [Related work](#related-work)
 - [Projection methods](#projection-methods)
 - [Datasets](#datasets)
 - [Metrics](#metrics)
+	- [Stability Metrics](#stability-metrics)
+	- [Spatial metrics](#spatial-metrics)
 - [Results](#results)
 - [Conclusion, discussion, future work](#conclusion-discussion-future-work)
 - [Recreating the results / Testing new methods and datasets](#recreating-the-results-testing-new-methods-and-datasets)
@@ -24,13 +27,21 @@ E.F. Vernier, R. Garcia, I.P. da Silva, J.L.D. Comba, A.C. Telea, and L.G. Nonat
 **TODOs**
 
 - [ ] Write introduction.
-- [ ] Write about the metrics. Look up previous reports.
 - [ ] Add references. Markdown doesn't deal with this, so maybe just list them to make things easier in the future.
 - [ ] Conclusion, discussion, future work.
 - [ ] Write about why s1 methods are unstable and present examples. Present any other weird/unexpected behavior.
 - [ ] Explain pca s4 and AE stability (show inverse projection).
 
 ## Introduction
+TODO
+
+Our contributions are:
+- We present and share a new benchmark of dynamic high dimensional datasets;
+- We propose a set of stability metrics for dynamic projection (don't think anyone has ever done that before);
+- Proposed using autoencoder methods as a dimensionality reduction techniques in dynamic data;
+- Quantitative testing of dynamic dimensionality reduction techniques.
+
+## Related work
 TODO
 
 ## Projection methods
@@ -54,7 +65,11 @@ We experiment with different optimizers, architectures, training routines, etc. 
 IDEAS FOR THE FUTURE: (a) Can we extend UMAP the same way that Paulo extended t-SNE for dynamic data. (b) Would linear discriminant analysis with strategy 4 make sense?
 
 ## Datasets
+We introduce a benchmark with ten datasets from different domains and sources, with a large range in number of items, timesteps and dimensions.
+
 The notebooks and files that generated the datasets are available [here](https://drive.google.com/drive/folders/1MXJK2mqH015pAohuBawVIQeqgB38JAsy?usp=sharing).
+
+The datasets themselves can be found and downloaded from the `./Datasets` folder.
 
 **1. cartolastd** - 696 observations - 19 timesteps - 17 dimensions - 5 classes -
 [Video](Docs/videos/cartolastd-avi-10.avi)
@@ -127,7 +142,58 @@ There are three classes, in one the values of the dimensions start low and go hi
 | 10 | walk       | 300     | 50          | 100    | 3         |
 
 ## Metrics
-TODO - base off of a previous report.  
+
+### Stability Metrics
+Let's start with some context. We are playing with dynamic projection techniques. They are dynamic in the sense that they handle high-dimensional datasets that evolves through time which we would like to project into a lower dimensional space. Imagine our projections as being a 2D scatter plots. The patterns the points form in 2D should suggest the patterns that exist in the high dimensional space. For example, on a given time t, neighbor points in 2D should correspond to neighbor points in the original data, clusters in the original data should correspond to clusters in 2D, and vice versa. But as these properties change in high dimensional space, we would like not only that they be transferred to 2D (or 1D or 3D) via the movement of the points, but that temporal coherence be kept during this process.
+
+Let's define some notation to makes things easier later on. A static dataset $\mathcal{D}=\mathbf{x}_1, \dots, \mathbf{x}_S$ is a sequence of S observations, which are N-dimensional. $\mathcal{P}=\mathbf{p}_1, \dots, \mathbf{p}_S$ is a projection, where each $\mathbf{p}_i \in \mathbb{R}^M$ corresponds to $\mathbf{x}_i \in \mathbb{R}^N$. Typically, $N \gg M$. Since our data is dynamic, we have sequences of projections $\mathcal{P}[1], \ldots, \mathcal{P}[T]$ for our time-depent dataset $\mathcal{D}[1], \ldots, \mathcal{D}[T]$.
+
+It is easier to define temporal coherence or stability with examples. Imagine that the attributes of an observation $\mathbf{x}_i[t]$ don't change a lot compared to its neighbors from time $t$ to $t+1$, but the point $\mathbf{p}_i[t]$ moves a lot in the projection. There is clearly some instability in the system. Conversely, if the attributes on an observation $\mathbf{x}_i[t]$ change a lot in respect to its neighbors, it would be incorrect if the point $\mathbf{p}_i[t]$ remained static. Since the whole point of using projections is to infer behavior and patterns of the N-dimensional space through the patterns seen in the M-dimensional space, we would like to see some correlation between the movements/changes of the two.
+
+**Statistical correlation**
+
+The two variable we want to measure the correlation are the "change of the attributes of an observation $\mathbf{x}_i$ from time $t$ to $t+1$ measured as the nD Euclian distance" $= ||\mathbf{x}_i[t] - \mathbf{x}_i[t+1]|| = c(\mathbf{x}_i[t])$, and "movement of a point $\mathbf{p}_i$ from time $t$ to $t+1$ measured as the Euclian distance" $= ||\mathbf{p}_i[t] - \mathbf{p}_i[t+1]|| = c(\mathbf{p}_i[t])$.
+
+There are a few ways to measure correlation. The most common is the Pearson correlation coefficient. It is a measure of the linear correlation between two variables X and Y. According to the Cauchy–Schwarz inequality, it has a value between $+1$ and $−1$, where 1 is total positive linear correlation, 0 is no linear correlation, and $−1$ is total negative linear correlation.
+
+One problem with using it is that we don't know if the relationship between the two variables should be linear. Maybe it looks like a logarithmic or exponential function, in which case, the Pearson correlation would be low. One way around this is to use a rank correlation coefficient.
+
+The two most notable rank correlation coefficients are _Spearman's rho_ and _Kendall's tau_. These, instead of measuring the linearity of the relationship, assess how well the relationship between two variables can be described using a monotonic function.
+
+These use two different mechanisms to test the dependence between two ordinal (or rank-transformed) variables. In broad terms, rho sums the squared errors of ranks, whereas tau sums the absolute discrepancies by computing the number of concordant and discordant pairs. After doing a little bit of research, there doesn't seem to be any solid advice about picking one over the other as long as we use the variations that can handle tied ranks. The reason for that is that some of our datasets are discrete, e.g. k pixels in an image change between revisions, and therefore there are many repeated values of $c(\mathbf{x}_i[t])$.
+
+Another choice we have to make is whether we want to compute the correlation for the T timesteps individually and average them out, or whether we would like to put all $(c(x_i[t]), c(p_i[t]))$ in the same "bin" and compute the correlation once.
+
+After some tests, I've noticed that in the first strategy would generate a lot of NaNs. That is because some the observations do not change in the N-dimensional space during the T revisions and this creates problems for the statistics (divisions by zero and rankings all tied). So we chose to use the second, more robust, strategy.
+
+**Feature scaling + comparison**
+
+Note that the two changes may happen in different value ranges. If we are just computing correlation measures, that is not a problem, but our idea is to have as many independent measurements as possible agree on whether a technique is unstable or not.
+
+What we initially did was trying to normalize the changes to ranges where it would make sense to next to use differences, ratios, or something else to combine the scaled $c(\mathbf{x}_i[t])$ and $c(\mathbf{p}_i[t])$.
+
+So we are actually making three choices: How to scale, at what level to scale (for each $i$ or for all $i$s together), and how to compare.
+
+We experimented with 2 types of scaling. Min-max normalization and standardization.
+
+- Normalization rescales the values into a range of [0,1].
+$$ X^{norm} = \frac{X - X_{min}}{X_{max}-X_{min}} $$
+
+- Standardization rescales data to have a mean ($\mu$) of 0 and standard deviation ($\sigma$) of 1 (unit variance).
+$$ X^{std} = \frac{X - \mu}{\sigma} $$
+
+I've decided to scale at the level of the whole dataset (all $i$s together) because if an observation/point doesn't change through time, we'll get divisions by 0.
+
+To combine the two variables we used a stress based metric where
+
+$$stress= \frac{\sum_{t=1}^{T}\sum_{i=1}^{S}\left(c(\mathbf{x}i[t]) - c(\mathbf{p}i[t])\right)^{2}}{\sum{t=1}^{T}\sum{i=1}^{S}c(\mathbf{x}_i[t])^2} $$
+
+T is the number of timesteps, and S is the number of observations per timestep.
+
+We've also experimented with Kullback–Leibler divergence but had numerical problems on some datasets, so we decided not to use it.
+
+### Spatial metrics
+TODO
 
 ## Results
 Here is the metric average for all dataset for each method.
@@ -181,7 +247,17 @@ See walk tsne s4.
 
 **TODO Why pca s4 and AEs are stable**
 
+(copy from some old email, fix this text later)
+So imagine we have a trained autoencoder. On the left is the result of entering the images in the encoder and seeing what 2d coordinates come out the other end.
+Now image we sample the coordinate space with a grid of 20x20 points with x varying uniformily between -15,15 and the same for y.
+Then we take the points on the grid and run them throught the decoder. The decoder outputs an image for each point and we plot the image atop that x,y coordinate.
+This gives us some idea of what is happening in the 2D space. See that in the top left there are the cellos (orange dots) and the decoded images kind of look like cellos. At the bottom right we see the baseballs, and the same for the other classes.
+In the top right there are no points, for some reason the Latent Space Representation for those values represent vertical and horizontal lines.
+With this we could also predict where some out of core data would fall.
+
 ![](Docs/images/inverse-proj.png)
+
+todo tsne doesnt deal with appearing and desappearing point, while aes do.
 
 ## Conclusion, discussion, future work
 TODO
