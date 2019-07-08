@@ -24,14 +24,6 @@ E.F. Vernier, R. Garcia, I.P. da Silva, J.L.D. Comba, A.C. Telea, and L.G. Nonat
 
 <!-- /TOC -->
 
-**TODOs**
-
-- [ ] Write introduction.
-- [ ] Add references. Markdown doesn't deal with this, so maybe just list them to make things easier in the future.
-- [ ] Conclusion, discussion, future work.
-- [ ] Write about why s1 methods are unstable and present examples. Present any other weird/unexpected behavior.
-- [ ] Explain pca s4 and AE stability (show inverse projection).
-
 ## Introduction
 TODO
 
@@ -43,6 +35,9 @@ Our contributions are:
 
 ## Related work
 TODO
+
+- [ ] Add references. Markdown doesn't deal with this, so maybe just list them to make things easier in the future.
+
 
 ## Projection methods
 **PCA** - A technique for dimensionality reduction that performs a linear mapping of the data to a lower-dimensional space maximizing the variance of the data in the low-dimensional representation. We created a wrapper that around the scikit-learn implementation that offers two usage modes: Strategy 1 (pca_s1) computes PCA independently for each timestep. Strategy 4 (pca_s4) works by grouping all timesteps and computing PCA once. The terminology was borrowed from the dt-SNE paper.
@@ -176,10 +171,10 @@ So we are actually making three choices: How to scale, at what level to scale (f
 
 We experimented with 2 types of scaling. Min-max normalization and standardization.
 
-- Normalization rescales the values into a range of [0,1].
+Normalization rescales the values into a range of [0,1].
 $$ X^{norm} = \frac{X - X_{min}}{X_{max}-X_{min}} $$
 
-- Standardization rescales data to have a mean ($\mu$) of 0 and standard deviation ($\sigma$) of 1 (unit variance).
+Standardization rescales data to have a mean ($\mu$) of 0 and standard deviation ($\sigma$) of 1 (unit variance).
 $$ X^{std} = \frac{X - \mu}{\sigma} $$
 
 I've decided to scale at the level of the whole dataset (all $i$s together) because if an observation/point doesn't change through time, we'll get divisions by 0.
@@ -193,7 +188,13 @@ T is the number of timesteps, and S is the number of observations per timestep.
 We've also experimented with Kullback–Leibler divergence but had numerical problems on some datasets, so we decided not to use it.
 
 ### Spatial metrics
-TODO
+These are the metrics that measure the quality of the layout, i.e., how points are placed in the projections. We compute two kinds of spatial metrics: those that measure how well the distances from the original space have been preserved in mD, and those that assess the quality of the projected neighborhoods.
+
+In the former class we use the exact same mathematical mechanisms presented in the stability metrics section, but instead comparing the position changes in nD and mD, we compute for each point in each timestep the distance to all its neighbors in nD and mD. In simple terms, if two observations are close (relative to the other observations) in nD and they remain close in mD, our projection method did a good job. Instead, if these points are far apart in the projection, the method failed to preserve the distances and the metric measurements should be negatively affected.
+
+The second class of spatial measurements contains two metrics: Neighborhood Preservation and Neighborhood Hit (these already exist in the literature). In the Neighborhood Preservation metric, for different values of k, we compute the percentage of the k nearest neighbors in nD are still in the knn list in mD for every point in the projection. In the Neighborhood Hit metric, for each point, its k nearest neighbors are found and the ratio of the neighbors of the same class as the analyzed instance is verified.
+
+We compute these metric for k = 1%, 2%, 3%, ..., 50%  of the total number of points in each projection.
 
 ## Results
 Here is the metric average for all dataset for each method.
