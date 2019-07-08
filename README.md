@@ -136,9 +136,9 @@ There are three classes, in one the values of the dimensions start low and go hi
 | 9  | sorts      | 80      | 100         | 100    | 8         |
 | 10 | walk       | 300     | 50          | 100    | 3         |
 
-![](Docs/images/datasets_overview_2_1.png)
+![](Docs/images/datasets_overview.png)
 
-The image above presents an overview on the intrinsic dimensionality of each dataset. If the circle is mostly pink it means that with only a few dimensions we obtain over 90% of the data variance. If the circle is mostly purple it means that most of the original dimensions are needed to describe the same 90% data variance. The circle area indicates the total number of observations. The stroke portrais the number of time steps.
+The image above presents an overview on the intrinsic dimensionality of each dataset. If the circle is mostly pink it means that with only a few dimensions we obtain over 90% of the data variance. If the circle is mostly purple it means that most of the original dimensions are needed to describe the same 90% data variance. The circle area indicates the median of the number of observations per time step. The stroke portrais the number of time steps.
 
 ## Metrics
 
