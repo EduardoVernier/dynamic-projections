@@ -235,24 +235,25 @@ Then I decided to color them by timestep using a colormap that goes from red to 
 
 ![](Docs/images/walk-timescatter.png)
 
+**Causes of unstable behavior**
 
-**TODO Causes of unstable behavior**
-
-pca s1
-
-![](Docs/images/pca-unstable.png)
-
-tsne s1
+Our results say that tsne_s1, that is, t-SNE computed independently for each timestep, is the most unstable of the techniques assessed. The reason for that is t-SNE is a method with stochastic characteristics built for static data. It has a non-convex objective function which is minimized using a gradient descent optimization initiated randomly. As a result, it is possible that different runs with the same data output different projections. We might see different clusters being formed in different runs or at different absolute positions in the mD space.
 
 ![](Docs/images/tsne-unstable.png)
 
+We also see instability in pca_s1, but for different reasons. In this case, it is associated with the Eigenvectors and Eigenvalues from the data at each timestep. If from one revision to the next, there is a change in rank of Eigenvectors, i.e., one of the associated Eigenvalues becomes larger than the other, we may see what resembles a reflection (step 2 to 3). If the data changes sufficiently, and the Eigenvectors change considerably, we may also see a rotation (step 3 to 4). Note that in contrast to t-SNE, these changes/artifacts are not stochastic.
+
+![](Docs/images/pca-unstable.png)
+
+TODO dt-sne optimization fails
+
 **TODO Causes of movement restriction**
 
-See walk tsne s4.
+TODO See walk tsne s4.
 
 **TODO Why pca s4 and AEs are stable**
 
-(copy from some old email, fix this text later)
+TODO (copy from some old email, fix this text later)
 So imagine we have a trained autoencoder. On the left is the result of entering the images in the encoder and seeing what 2d coordinates come out the other end.
 Now image we sample the coordinate space with a grid of 20x20 points with x varying uniformily between -15,15 and the same for y.
 Then we take the points on the grid and run them throught the decoder. The decoder outputs an image for each point and we plot the image atop that x,y coordinate.
