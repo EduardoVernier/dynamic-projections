@@ -245,25 +245,21 @@ We also see instability in pca_s1, but for different reasons. In this case, it i
 
 ![](Docs/images/pca-unstable.png)
 
-TODO dt-sne optimization fails
+We also encountered datasets in which dt-SNE seem to have trouble optimizing the objective function. Look at these videos, for example, [qtables](Docs/videos/qtables-avi-10.avi) and [sorts](Docs/videos/sorts-avi-10.avi). In both cases dt-SNE didn't form the expected spatial structures nor any sensible movement. The output seems a bit random. We also noticed that in some cases the technique was extremely sensitive to the choice of hyperparameters.
 
-**TODO Causes of movement restriction**
+**Why pca s4 and AEs are stable**
 
-TODO See walk tsne s4.
+We mentioned that the reason for the instability in pca_s1 is the change of the Eigenvectors and Eigenvalues associated with the data at each timestep. But what if we could make a good choice of Eigenvectors and associated Eigenvalues for the whole dataset. This is what pca_s4 does. If looks at the data of all timesteps and chooses the m axes of largest variation. It then uses them to construct a projection matrix which is then used to transform the data at each timestep. This means that we might not get the characteristic of PCA of choosing axes that best describe the data variation at each timestep, but we will have a very stable projection set.
 
-**TODO Why pca s4 and AEs are stable**
-
-TODO (copy from some old email, fix this text later)
+_TODO (copy from some old email, fix this text later)
 So imagine we have a trained autoencoder. On the left is the result of entering the images in the encoder and seeing what 2d coordinates come out the other end.
 Now image we sample the coordinate space with a grid of 20x20 points with x varying uniformily between -15,15 and the same for y.
 Then we take the points on the grid and run them throught the decoder. The decoder outputs an image for each point and we plot the image atop that x,y coordinate.
 This gives us some idea of what is happening in the 2D space. See that in the top left there are the cellos (orange dots) and the decoded images kind of look like cellos. At the bottom right we see the baseballs, and the same for the other classes.
 In the top right there are no points, for some reason the Latent Space Representation for those values represent vertical and horizontal lines.
-With this we could also predict where some out of core data would fall.
+With this we could also predict where some out of core data would fall._
 
 ![](Docs/images/inverse-proj.png)
-
-todo tsne doesnt deal with appearing and desappearing point, while aes do.
 
 ## Conclusion, discussion, future work
 TODO
