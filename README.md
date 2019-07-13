@@ -34,9 +34,7 @@ Our contributions are:
 - Quantitative testing of dynamic dimensionality reduction techniques.
 
 ## Related work
-TODO
-
-- [ ] Add references. Markdown doesn't deal with this, so maybe just list them to make things easier in the future.
+TODO Add references. Markdown doesn't deal with this, so maybe just list them to make things easier in the future.
 
 
 ## Projection methods
@@ -185,7 +183,7 @@ I've decided to scale at the level of the whole dataset (all $i$s together) beca
 
 To combine the two variables we used a stress based metric where
 
-$$stress= \frac{\sum_{t=1}^{T}\sum_{i=1}^{S}\left(c(\mathbf{x}i[t]) - c(\mathbf{p}i[t])\right)^{2}}{\sum{t=1}^{T}\sum{i=1}^{S}c(\mathbf{x}_i[t])^2} $$
+$$stress= \frac{\sum_{t=1}^{T}\sum_{i=1}^{S}\left(c(\mathbf{x}i[t]) - c(\mathbf{p}i[t])\right)^{2}}{\sum_{t=1}^{T}\sum_{i=1}^{S}c(\mathbf{x}_i[t])^2} $$
 
 T is the number of timesteps, and S is the number of observations per timestep.
 
@@ -249,15 +247,11 @@ We also encountered datasets in which dt-SNE seem to have trouble optimizing the
 
 **Why pca s4 and AEs are stable**
 
-We mentioned that the reason for the instability in pca_s1 is the change of the Eigenvectors and Eigenvalues associated with the data at each timestep. But what if we could make a good choice of Eigenvectors and associated Eigenvalues for the whole dataset. This is what pca_s4 does. If looks at the data of all timesteps and chooses the m axes of largest variation. It then uses them to construct a projection matrix which is then used to transform the data at each timestep. This means that we might not get the characteristic of PCA of choosing axes that best describe the data variation at each timestep, but we will have a very stable projection set.
+We mentioned that the reason for the instability in pca_s1 is the change of the Eigenvectors and Eigenvalues associated with the data at each timestep. But what if we could make a good choice of Eigenvectors and associated Eigenvalues and stick to it for the whole dataset. This is what pca_s4 does. If looks at the data of all timesteps and chooses the m axes of largest variation. It then uses them to construct a projection matrix which is then used to transform the data at each timestep. This means that we might not get the characteristic of PCA of choosing axes that best describe the data variation at each timestep, but we will have a very stable projection set.
 
-_TODO (copy from some old email, fix this text later)
-So imagine we have a trained autoencoder. On the left is the result of entering the images in the encoder and seeing what 2d coordinates come out the other end.
-Now image we sample the coordinate space with a grid of 20x20 points with x varying uniformily between -15,15 and the same for y.
-Then we take the points on the grid and run them throught the decoder. The decoder outputs an image for each point and we plot the image atop that x,y coordinate.
-This gives us some idea of what is happening in the 2D space. See that in the top left there are the cellos (orange dots) and the decoded images kind of look like cellos. At the bottom right we see the baseballs, and the same for the other classes.
-In the top right there are no points, for some reason the Latent Space Representation for those values represent vertical and horizontal lines.
-With this we could also predict where some out of core data would fall._
+A similar procedure is what makes AEs, which by definition are comprised of an enconder plus a decoder, stable. We train the autoencoder with the entire dataset (all timesteps), so it learns a latent representation that, hopefully, is representative of the global distributions. Once trained, the encoder becomes a nonstochastic function that maps nD data to mD data. This is what makes autoencoders stable.
+
+To illustrate the inner workings of an AE, lets look at the next image. On the left plot, we see the output of the encoder as result of inputting our nD data ($enc :nD \rightarrow mD$), in this case, the last revision of the quickdraw dataset. We can see class separation and a set of clusters. Conversely, the right image is the result of entering a uniform grid of 2D points into the decoder and getting as output the corresponding nD reconstructions ($dec :mD \rightarrow nD$). This second plot gives us a good idea of what is happening in the latent space. If we look at matching regions on the two plots, we can see that the reconstructed inputs look alike the original data in nD. That is, we see the cellos (orange dots) on the top left corner of the left plot, and matching decoded images that resemble cellos. At the bottom left we see the baseballs, and the same for the other classes. We can also see regions were classes merge and how their reconstructions combine. This static global map, which represents the shape of the latent space, is what provides stability to autoencoders.
 
 ![](Docs/images/inverse-proj.png)
 
