@@ -34,7 +34,33 @@ Our contributions are:
 - Quantitative testing of dynamic dimensionality reduction techniques.
 
 ## Related work
-TODO Add references. Markdown doesn't deal with this, so maybe just list them to make things easier in the future.
+
+Important refs:
+
+Projections used with dynamic/incremental/streaming datasets
+- dt-sne https://dl.acm.org/citation.cfm?id=3058894
+- pca for streaming data https://arxiv.org/abs/1905.04000
+- S. Cheng, K. Mueller, and W. Xu. A framework to visualize temporal behavioral relationships in streaming multivariate data. In Proc. New York Scientific Data Summit, pp. 1–10. IEEE, 2016.
+- E. R. Gansner, Y. Hu, and S. C. North. Interactive visualization of streaming text data with dynamic maps. Journal of Graph Algorithms and Applications, 17(4):515–540, 2013.
+
+>Several techniques exist for high-dimensional data visu-
+alization, including glyphs [5], parallel coordinate plots [6],
+table lenses [7], [8], scatterplot matrices [9], dimensionality
+reduction methods [10], and multiple views linking the
+above visualization types [11]. -  from the espadoto's survey.
+
+
+Most important techniques PCA, MDS, LLE, t-SNE, UMAP, .... see espadoto's survey + Link a few surveys on the topic.
+
+> Dataset traits - The dataset traits we propose to describe D aim to capture
+aspects outlined as important for the behavior of projection
+algorithms in earlier surveys [12], [13], [23].
+
+
+> Quality metrics - Using metrics
+to gauge the quality of DR methods is an established field
+for which separate surveys exist [10], [22], [29], [96].
+
 
 
 ## Projection methods
@@ -121,18 +147,20 @@ There are three classes, in one the values of the dimensions start low and go hi
 
 **TABLE**
 
-|    | dataset_id | n_items | n_timesteps | n_dims | n_classes |
-|:---|:-----------|:--------|:------------|:-------|:----------|
-| 1  | cartolastd | 696     | 19          | 17     | 5         |
-| 2  | cifar10cnn | 1000    | 30          | 10     | 10        |
-| 3  | esc50      | 320     | 108         | 128    | 8         |
-| 4  | fashion    | 1000    | 10          | 784    | 10        |
-| 5  | gaussians  | 2000    | 10          | 100    | 10        |
-| 6  | nnset      | 80      | 30          | 8070   | 8         |
-| 7  | qtables    | 180     | 40          | 1200   | 9         |
-| 8  | quickdraw  | 600     | 89          | 784    | 6         |
-| 9  | sorts      | 80      | 100         | 100    | 8         |
-| 10 | walk       | 300     | 50          | 100    | 3         |
+|    | dataset_id | n_items | n_timesteps | n_dims | n_classes | avg_intrinsic_dim | avg_sparsity_ratio |
+|:---|:-----------|:--------|:------------|:-------|:----------|:------------------|:-------------------|
+| 1  | cartolastd | 696     | 19          | 17     | 5         | 0.6470            | 0.0                |
+| 2  | cifar10cnn | 1000    | 30          | 10     | 10        | 0.6599            | 0.0                |
+| 3  | esc50      | 320     | 108         | 128    | 8         | 0.0345            | 0.0                |
+| 4  | fashion    | 1000    | 10          | 784    | 10        | 0.4762            | 0.2971             |
+| 5  | gaussians  | 2000    | 10          | 100    | 10        | 0.3680            | 0.0                |
+| 6  | nnset      | 80      | 30          | 8070   | 8         | 0.0057            | 0.0001             |
+| 7  | qtables    | 180     | 40          | 1200   | 9         | 0.0077            | 0.0007             |
+| 8  | quickdraw  | 600     | 89          | 784    | 6         | 0.4309            | 0.9013             |
+| 9  | sorts      | 80      | 100         | 100    | 8         | 0.3505            | 0.0100             |
+| 10 | walk       | 300     | 50          | 100    | 3         | 0.4783            | 0.0001             |
+
+
 
 ![](Docs/images/datasets_overview.png)
 
