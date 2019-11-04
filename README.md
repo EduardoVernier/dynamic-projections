@@ -91,57 +91,57 @@ The notebooks and files that generated the datasets are available [here](https:/
 The datasets themselves can be found and downloaded from the `./Datasets` folder.
 
 **1. cartolastd** - 696 observations - 19 timesteps - 17 dimensions - 5 classes -
-[Video](Docs/videos/cartolastd-avi-10.avi)
+[Video](Media/videos/cartolastd-avi-10.avi)
 
 The dataset was scrapped from the Brazilian fantasy soccer platform Cartola and represents the second turn of the 2017 championship. The scrapper source can be found at https://github.com/henriquepgomide/caRtola. To make the dataset smoother, the dimensions were cumulatively averaged.
 
 **2. cifar10cnn** - 1000 observations - 30 timesteps - 10 dimensions - 10 classes -
-[Video](Docs/videos/cifar10cnn-avi-10.avi)
+[Video](Media/videos/cifar10cnn-avi-10.avi)
 
 I took the example CNN available at the keras website (https://keras.io/examples/cifar10_cnn/) and looked at the output of the last layer after each epoch for 1000 images of the validation set. After 30 epochs the CNN had an accuracy of 0.6950.
 
 **3. esc50** - 320 observations - 108 timesteps - 128 dimensions - 8 classes -
-[Example](Docs/images/esc50-wind.png) -
-[Video](Docs/videos/esc50-avi-10.avi)
+[Example](Media/images/esc50-wind.png) -
+[Video](Media/videos/esc50-avi-10.avi)
 
 Sound samples of 8 classes (brushing_teeth, chainsaw, crying_baby, engine, laughing, rain, siren, wind) compressed to 128 frequencies and smoothed over time. Collected from https://github.com/karoldvl/ESC-50 by K. J. Piczak.
 
 **4. fashion** - 1000 observations - 10 timesteps - 784 dimensions (28x28 pixels) - 10 classes -
-[Example](Docs/images/fashion-observations.png) -
-[Video](Docs/videos/fashion-avi-10.avi)
+[Example](Media/images/fashion-observations.png) -
+[Video](Media/videos/fashion-avi-10.avi)
 
 100 images from each class (T-shirt/top, Trouser, Pullover, Dress, Coat, Sandal, Shirt, Sneaker, Bag, Ankle boot) were selected and added decreasing amounts of noise.
 
 **5. gaussians** - 2000 observations - 10 timesteps - 100 dimensions - 10 classes -
-[Video](Docs/videos/gaussians-avi-10.avi)
+[Video](Media/videos/gaussians-avi-10.avi)
 
 Dataset from Rauber et. al's dt-sne paper. _“We create the multivariate Gaussians dataset specifically as a controlled experiment for dynamic t-SNE. Firstly, we sample 200 observations from each of 10 distinct (isotropic) 100-dimensional multivariate Gaussian distributions with variance 0.1. We combine the resulting 2000 observations into a single dataset D\[1\]. Each multivariate Gaussian has a distinct mean, which is chosen uniformly between the standard basis vectors for R 100 . Given D\[t\], the dataset D\[t + 1\] is created as follows. Each observation x\[t + 1\] ∈ D\[t + 1\] corresponds to an observation x\[t\] ∈ D\[t\] moved 10% of the remaining distance closer to the mean of its corresponding multivariate Gaussian. In simple terms, each of the 10 clusters becomes more compact as t increases. We consider T = 10 datasets.”_
 
 **6. nnset** - 80 observations - 30 timesteps - 8070 dimensions - 8 classes -
-[Example](Docs/images/nnset-states.png) -
-[Video](Docs/videos/nnset-avi-10.avi)
+[Example](Media/images/nnset-states.png) -
+[Video](Media/videos/nnset-avi-10.avi)
 
 This dataset represents the internal states (weights and biases) of a set of neural networks learning to classify MNIST with same architecture but using different optimizers, batch sizes, training data sizes. There doesn't seem to be a clear class separation in this dataset.   
 
 **7. qtables** - 180 observations - 40 timesteps - 1200 dimensions - 9 classes -
-[Video](Docs/videos/qtables-avi-10.avi)
+[Video](Media/videos/qtables-avi-10.avi)
 
 Each observation is an agent learning to move a car up a hill using the reinforcement learning algorithm Q-learning. The classes represent variations of learning rates and discounts. The car has 3 actions, and the decision space has 2 features, each divided into 20 discrete steps. Therefore the dataset is 3x20x20 or 1200 dimensions. Code based on this tutorial: https://pythonprogramming.net/q-learning-reinforcement-learning-python-tutorial/.
 
 **8. quickdraw** - 600 observations - 89 timesteps - 784 dimensions (28x28 pixels) - 6 classes -
-[Example](Docs/images/quickdraw-doodles.png) -
-[Video](Docs/videos/quickdraw-avi-10.avi)
+[Example](Media/images/quickdraw-doodles.png) -
+[Video](Media/videos/quickdraw-avi-10.avi)
 Google has a little fun project called Quick Draw (https://quickdraw.withgoogle.com/data). It’s a website where they give you a few seconds to draw some object while a neural network is trying to guess what is it that you are trying to draw. What I did was extract drawing sequences for 600 objects of 6 different classes drawn by random people. In my sample, each final drawing is composed of an average of 36.1 partial drawings. Each image is a 28x28 pixel binary map.
 
 **9. sorts** - 80 observations - 100 timesteps - 100 dimensions - 8 classes -
-[Example](Docs/images/sorts-imgs.png) -
-[Video](Docs/videos/sorts-avi-10.avi)
+[Example](Media/images/sorts-imgs.png) -
+[Video](Media/videos/sorts-avi-10.avi)
 
 Intermediate states of 8 sorting algorithms. Arrays initially have 100 random elements. Based on franciscouzo.github.io/sort/
 
 **10. walk** - 300 observations - 50 timesteps - 100 dimensions - 3 classes -
-[Example](Docs/images/walk-img.png) -
-[Video](Docs/videos/walk-avi-10.avi)
+[Example](Media/images/walk-img.png) -
+[Video](Media/videos/walk-avi-10.avi)
 
 There are three classes, in one the values of the dimensions start low and go high, one the values start high and decrease over time, and in the last, they stay roughly the same. For all of them, there is noise added (see example). This is supposed to be a "ground-truth" dataset with simple dynamics.
 
@@ -162,7 +162,7 @@ There are three classes, in one the values of the dimensions start low and go hi
 
 
 
-![](Docs/images/datasets_overview.png)
+![](Media/images/datasets_overview.png)
 
 The image above presents an overview on the intrinsic dimensionality of each dataset. If the circle is mostly pink it means that with only a few dimensions we obtain over 90% of the data variance. If the circle is mostly purple it means that most of the original dimensions are needed to describe the same 90% data variance. The circle area indicates the median of the number of observations per time step. The stroke portrais the number of time steps.
 
@@ -249,29 +249,29 @@ A more interesting look at the stability measurements of the same dataset is giv
 
 ![](Plots/Figs/trails-cartolastd.png)
 
-All datasets tell roughly the same story with one exception, the "walk" dataset. And I don't understand why, the behavior seen in the [video](Docs/videos/walk-avi-10.avi) is exactly what I was expecting to see. The stability plots, however, tells us that, there are discontinuities in the movement rates. In the PCA and AE/VAE plots, we see two movement rate clusters.
+All datasets tell roughly the same story with one exception, the "walk" dataset. And I don't understand why, the behavior seen in the [video](Media/videos/walk-avi-10.avi) is exactly what I was expecting to see. The stability plots, however, tells us that, there are discontinuities in the movement rates. In the PCA and AE/VAE plots, we see two movement rate clusters.
 
 ![](Plots/Figs/trails-walk.png)
 
 To investigate this, I colored movement measures by their class, the same as in the previous image and first row, but we see no pattern appear.
 
-![](Docs/images/walk-classscatter.png)
+![](Media/images/walk-classscatter.png)
 
 Then I decided to color them by timestep using a colormap that goes from red to yellow to green. Now we see clear separation! With PCA/AE/VAE, points in the first timestep (red) that change the same amount in nD as the last timestep points (green), move much less in the mD space. I am not sure why that is the case, any ideas? In any case, our metrics don't like that behavior.
 
-![](Docs/images/walk-timescatter.png)
+![](Media/images/walk-timescatter.png)
 
 **Causes of unstable behavior**
 
 Our results say that tsne_s1, that is, t-SNE computed independently for each timestep, is the most unstable of the techniques assessed. The reason for that is t-SNE is a method with stochastic characteristics built for static data. It has a non-convex objective function which is minimized using a gradient descent optimization initiated randomly. As a result, it is possible that different runs with the same data output different projections. We might see different clusters being formed in different runs or at different absolute positions in the mD space.
 
-![](Docs/images/tsne-unstable.png)
+![](Media/images/tsne-unstable.png)
 
 We also see instability in pca_s1, but for different reasons. In this case, it is associated with the Eigenvectors and Eigenvalues from the data at each timestep. If from one revision to the next, there is a change in rank of Eigenvectors, i.e., one of the associated Eigenvalues becomes larger than the other, we may see what resembles a reflection (step 2 to 3). If the data changes sufficiently, and the Eigenvectors change considerably, we may also see a rotation (step 3 to 4). Note that in contrast to t-SNE, these changes/artifacts are not stochastic.
 
-![](Docs/images/pca-unstable.png)
+![](Media/images/pca-unstable.png)
 
-We also encountered datasets in which dt-SNE seem to have trouble optimizing the objective function. Look at these videos, for example, [qtables](Docs/videos/qtables-avi-10.avi) and [sorts](Docs/videos/sorts-avi-10.avi). In both cases dt-SNE didn't form the expected spatial structures nor any sensible movement. The output seems a bit random. We also noticed that in some cases the technique was extremely sensitive to the choice of hyperparameters.
+We also encountered datasets in which dt-SNE seem to have trouble optimizing the objective function. Look at these videos, for example, [qtables](Media/videos/qtables-avi-10.avi) and [sorts](Media/videos/sorts-avi-10.avi). In both cases dt-SNE didn't form the expected spatial structures nor any sensible movement. The output seems a bit random. We also noticed that in some cases the technique was extremely sensitive to the choice of hyperparameters.
 
 **Why pca s4 and AEs are stable**
 
@@ -281,7 +281,7 @@ A similar procedure is what makes AEs, which by definition are comprised of an e
 
 To illustrate the inner workings of an AE, lets look at the next image. On the left plot, we see the output of the encoder as result of inputting our nD data ($enc :nD \rightarrow mD$), in this case, the last revision of the quickdraw dataset. We can see class separation and a set of clusters. Conversely, the right image is the result of entering a uniform grid of 2D points into the decoder and getting as output the corresponding nD reconstructions ($dec :mD \rightarrow nD$). This second plot gives us a good idea of what is happening in the latent space. If we look at matching regions on the two plots, we can see that the reconstructed inputs look alike the original data in nD. That is, we see the cellos (orange dots) on the top left corner of the left plot, and matching decoded images that resemble cellos. At the bottom left we see the baseballs, and the same for the other classes. We can also see regions were classes merge and how their reconstructions combine. This static global map, which represents the shape of the latent space, is what provides stability to autoencoders.
 
-![](Docs/images/inverse-proj.png)
+![](Media/images/inverse-proj.png)
 
 ## Conclusion, discussion, future work
 TODO
