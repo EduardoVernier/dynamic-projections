@@ -1,7 +1,8 @@
 # Dynamic projections
 E.F. Vernier, R. Garcia, I.P. da Silva, J.L.D. Comba, and A.C. Telea
 
-https://eduardovernier.github.io/dynamic-projections
+Website: https://eduardovernier.github.io/dynamic-projections
+Latex: https://github.com/EduardoVernier/dyn-proj-latex
 
 ## Recreating the results / Testing new methods and datasets
 Set up virtual env and dependencies using pipenv. https://pipenv.readthedocs.io/en/latest/
