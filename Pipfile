@@ -18,6 +18,7 @@ ipywidgets = "*"
 papermill = "*"
 tqdm = "*"
 mpl-scatter-density = "*"
+umap-learn = "*"
 
 [dev-packages]
 
