@@ -19,6 +19,7 @@ papermill = "*"
 tqdm = "*"
 mpl-scatter-density = "*"
 umap-learn = "*"
+setuptools = "*"
 
 [dev-packages]
 

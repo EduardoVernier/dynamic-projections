@@ -1,14 +1,16 @@
 #!/bin/bash
 
 datasets=$(cat Datasets/datasets.txt)
-for d in $datasets; do 
+for d in $datasets; do
   echo $d;
 #  python Models/pca/pca_s1.py Datasets/$d;
 #  python Models/pca/pca_s4.py Datasets/$d;
 #  python Models/tsne/tsne_s1.py Datasets/$d 30;
 #  python Models/tsne/tsne_s4.py Datasets/$d 30;
+  python Models/umap/umap_s1.py Datasets/$d 15;
+  python Models/umap/umap_s4.py Datasets/$d 15;
 #  papermill Plots/trails-video.ipynb Plots/temp.ipynb --log-output -p dataset_id $d;
-  papermill Plots/trails-image.ipynb Plots/temp.ipynb --log-output -p dataset_id $d;
+# papermill Plots/trails-image.ipynb Plots/temp.ipynb --log-output -p dataset_id $d;
 done;
 
 
@@ -22,4 +24,3 @@ done;
 #papermill ./Metrics/template.ipynb ./Metrics/quickdraw.ipynb --log-output -p projection_paths 'Output/quickdraw-AE_784f_500f_500f_2000f_2f_20ep.csv Output/quickdraw-C2AE_32c_32c_32c_1568f_2f_2ep.csv Output/quickdraw-VAE_784f_2048f_1024f_512f_2f_0-25drop_10ep.csv Output/quickdraw-C2VAE_32c_64c_128c_6272f_2f_10ep.csv Output/quickdraw-tsne_s1_30p.csv Output/quickdraw-tsne_s4_30p.csv Output/quickdraw-dtsne_200p_0-1l.csv Output/quickdraw-pca_s1.csv Output/quickdraw-pca_s4.csv'
 #papermill ./Metrics/template.ipynb ./Metrics/sorts.ipynb --log-output -p projection_paths 'Output/sorts-AE_10f_10f_2f_20ep.csv Output/sorts-VAE_100f_10f_2f_20ep.csv Output/sorts-tsne_s1_30p.csv Output/sorts-tsne_s4_30p.csv Output/sorts-dtsne_77p_0-01l.csv Output/sorts-pca_s1.csv Output/sorts-pca_s4.csv'
 #papermill ./Metrics/template.ipynb ./Metrics/walk.ipynb --log-output -p projection_paths 'Output/walk-AE_10f_10f_2f_20ep.csv Output/walk-VAE_100f_10f_2f_20ep.csv Output/walk-tsne_s1_30p.csv Output/walk-tsne_s4_30p.csv Output/walk-dtsne_100p_0-01l.csv Output/walk-pca_s1.csv Output/walk-pca_s4.csv'
-
